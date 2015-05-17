@@ -48,6 +48,7 @@ function perfiles(obj){
 	return per
 }
 
+
 function tmp_usuarios(obj){
 	var html='<div class="acciones_usuarios"><button class="btn btn-mini btn-success" style="float:right" onclick="agregar_usuario()"><i class="icon-plus icon-white"></i> Agregar nuevo usuario</button></div><br><br>'
 	    html+= '<table class="table table-condensed table-striped table-bordered">'
