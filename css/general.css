@@ -1,0 +1,28 @@
+.space_footer{
+	height: 50px;
+}
+.footer{
+width:100%; 
+padding-top:11px; 
+height:30px; 
+background:rgb(245, 245, 245); 
+position:fixed; 
+bottom:0; 
+text-align:center; 
+margin:0 auto;
+text-align:middle;
+color:rgb(0, 20, 245); 
+border-top: 2px solid darkorange;
+}
+.footer>.notificacion
+{
+	float: right;
+	margin-right: 5%;
+
+}
+#cargar_carteras{
+  background: aliceblue;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
