@@ -724,7 +724,7 @@ function ajustar_cotizacion() {
     var descripcion = $(".descripcion")
     var vector_descripcion = new Array
     $.each(descripcion, function() {
-        vector_descripcion.push(parseInt(this.value))
+        vector_descripcion.push(this.value)
     })
 
     var afecto_iva = $(".afecto")
@@ -745,7 +745,7 @@ function ajustar_cotizacion() {
 
         $("#unidad_" + producto).val(unidad)
         $("#precio_neto_" + producto).val(neto)
-        $("#descripcion_" + producto).text(desc)
+        $("#descripcion_" + producto).val(desc)
         if (parseInt(aplica_iva) === 1) {
 
             var calculo_iva = parseInt(((unidad * neto)*0.19))
@@ -849,6 +849,7 @@ function crear_cotizacion() {
     var total_iva = $("#total_iva").text()
     var modo_pago = $("#modo_pago").val()
     var obs = $("#observaciones").val()
+    var probabilidad = $("#probabilidad").val()
 
     if (contacto != "") {
 
@@ -875,6 +876,7 @@ function crear_cotizacion() {
                     total_iva: total_iva,
                     modo_pago: modo_pago,
                     observaciones: obs,
+                    probabilidad:probabilidad,
                     case :23
                 }
             })
@@ -886,6 +888,104 @@ function crear_cotizacion() {
                         window.location.reload()
                     } else {
                         window.location.href = server + 'clientes/cotizacion_pdf/' + result
+                    }
+                })
+            }
+
+        } else {
+            bootbox.alert('Debes agregar al menos 1 producto con un precio mayor a 0 para esta cotización.')
+        }
+    } else {
+        bootbox.alert('Debes ingresar un nombre de contacto para enviar la cotización', function() {
+            $("#contacto").focus()
+        })
+    }
+}
+
+function actualizar_cotizacion() {
+    //valores de la cotizacion
+
+
+    var productos = $(".productos")
+    var vector_productos = new Array
+    $.each(productos, function() {
+        vector_productos.push(parseInt(this.value))
+    })
+
+    var unidades = $(".unidades")
+    var vector_unidades = new Array
+    $.each(unidades, function() {
+        vector_unidades.push(parseInt(this.value))
+    })
+
+    var precio_neto = $(".precio_neto")
+    var vector_neto = new Array
+    $.each(precio_neto, function() {
+        vector_neto.push(parseInt(this.value))
+    })
+
+    var descripcion = $(".descripcion")
+    var vector_descripcion = new Array
+    $.each(descripcion, function() {
+        vector_descripcion.push($(this).val())
+    })
+
+    var afecto_iva = $(".afecto")
+    var vector_afecto = new Array
+    $.each(afecto_iva, function() {
+        vector_afecto.push(parseInt(this.value))
+    })
+
+    //datos del colegio
+    var idcotizacion = $("#idcotizacion").val()
+    var colegio = $("#colegio").val()
+    var direccion = $("#direccion").val()
+    var rbd = $("#rbd").val()
+    var telefono = $("#telefono").val()
+    var dependencia = $("#dependencia").val()
+    var contacto = $("#contacto").val()
+    var total = $("#total_neto").text()
+    var iva = $("#iva").text()
+    var total_iva = $("#total_iva").text()
+    var modo_pago = $("#modo_pago").val()
+    var obs = $("#observaciones").val()
+    var probabilidad = $("#probabilidad").val()
+
+    if (contacto != "") {
+
+        if (parseInt(total_iva) > 0) {
+            var datos_up = {
+                    idcotizacion:idcotizacion,
+                    productos: vector_productos,
+                    unidades: vector_unidades,
+                    netos: vector_neto,
+                    descripciones: vector_descripcion,
+                    afecto: vector_afecto,
+                    colegio: colegio,
+                    direccion: direccion,
+                    rbd: rbd,
+                    telefono: telefono,
+                    dependencia: dependencia,
+                    contacto: contacto,
+                    neto: total,
+                    iva: iva,
+                    total_iva: total_iva,
+                    modo_pago: modo_pago,
+                    observaciones: obs,
+                    probabilidad:probabilidad,
+                    case :48,
+                    path:'clientes/ajax/'
+                }
+            var procesar = capsula(datos_up)
+            var result = JSON.parse(procesar.fuente)
+            console.log(result)
+
+            if (parseInt(result) > 0) {
+                bootbox.confirm('<h1>Felicitaciones</h1>Se actualizo correctamente la cotización n°:'+idcotizacion, function(resp) {
+                    if (resp) {
+                        window.close()
+                    } else {
+                        bootbox.alert("No se logro actualizar la cotizacion!")
                     }
                 })
             }
@@ -1295,3 +1395,4 @@ function grabacion(registro, archivo){
     var html = '<audio controls><source src="'+grabacion+'" type="audio/wav"></source></audio>'
     bootbox.alert(html)
 }
+

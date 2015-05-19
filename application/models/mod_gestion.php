@@ -56,21 +56,31 @@ class mod_gestion extends CI_Model{
 		}
 	}
 
+
 	function traer_acciones($obja, $objb){
 
-		$this->db->select('cgt.id, cgt.descripcion gestion, count(ccg.id) total_gestion');
-		$this->db->from('core_cliente_gestion ccg');
-		$this->db->join('core_gesitones_tipo cgt', 'ccg.idgestion = cgt.id');
-		if($objb['mes']>0){
-			$this->db->where('DATE_FORMAT(ccg.fecha, "%m-%Y")=', $objb['mes']);
-		}else{
-			$this->db->where('DATE_FORMAT(ccg.fecha, "%m-%Y")=', date("m-Y"));
-		}
-		$this->db->where('ccg.idvendedor', $obja['idvendedor']);
-		$this->db->group_by('ccg.idvendedor, cgt.id');
-		$query = $this->db->get();
-		return $query->result_array();
+		$this->db->where('idperfil', $obja['idperfil']);
+		$this->db->order_by('orden');
+		$q_tipo_accion = $this->db->get('core_gesitones_tipo');
+		$row_tipo = $q_tipo_accion->result_array();
+		$inicio = explode("-",$objb['inicio']);
+		$mes = $inicio[1].'-'.$objb[0];
+		$data = array();
 
+		foreach($row_tipo as $rt){
+			//detalle de las acciones
+			
+			$this->db->from('core_cliente_gestion ccg');
+			$this->db->where("ccg.fecha between '".$objb['inicio']." 00:00:01' AND '".$objb['termino']." 23:59:59'");
+			$this->db->where('ccg.idvendedor', $obja['idvendedor']);
+			$this->db->where('ccg.idgestion', $rt['id']);
+			$this->db->group_by('ccg.rbd, ccg.idgestion');
+			$query = $this->db->get();
+			$row = $query->result_array();	
+			
+			array_push($data, array("tipo"=>$rt, "detalle"=>$row));
+		}
+		return $data;
 	}
 
 	function traer_usuarios($obj){

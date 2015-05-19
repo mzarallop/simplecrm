@@ -89,7 +89,8 @@
 							"iva"=>$param['iva'],
 							"total"=>$param['total_iva'],
 							"modalidad_pago"=>$param['modo_pago'],
-							"observaciones"=>$param['observaciones']
+							"observaciones"=>$param['observaciones'],
+							"porcentaje_cierre"=>$param['probabilidad']
 							);
 
 			$estado = @$this->db->insert('cotizacion_general', $datos);
@@ -294,6 +295,76 @@
 			return $row;
 		}
 
+		function traer_cotizacion($obj){
 
+			$this->db->where('id', $obj['cotizacion']);
+			$query_general = $this->db->get('cotizacion_general');
+			$row_general = $query_general->result_array();
+			//----------------------------------------------__>
+			$this->db->select('cd.*, ccp.nombre');
+			$this->db->where('cd.idcotizacion', $obj['cotizacion']);
+			$this->db->from('cotizacion_detalle cd');
+			$this->db->join('core_categorias_productos ccp', 'cd.idproducto = ccp.id');
+			$query_detalle = $this->db->get();
+			$row_detalle = $query_detalle->result_array();
+
+			$data = array("cotizacion"=>$row_general[0], "detalle"=>$row_detalle);
+
+			return $data;
+		}
+
+		function actualizar_cotizacion($param){
+			$usuario = $this->usuarios->datos_usuarios();
+			$datos = array("rbd"=>$param['rbd'],
+							"idvendedor"=>$usuario[0]['ID'],
+							"contacto"=>$param['contacto'],
+							"colegio"=>$param['colegio'],
+							"direccion"=>$param['direccion'],
+							"telefono"=>$param['telefono'],
+							"dependencia"=>"'".$param['dependencia']."'",
+							"neto"=>$param['neto'],
+							"iva"=>$param['iva'],
+							"total"=>$param['total_iva'],
+							"modalidad_pago"=>$param['modo_pago'],
+							"observaciones"=>$param['observaciones'],
+							"porcentaje_cierre"=>$param['probabilidad']
+							);
+
+			$this->db->where('id', $param['idcotizacion']);
+			$estado = @$this->db->update('cotizacion_general', $datos);
+			$cotizacion = $param['idcotizacion'];
+
+			if($estado){
+				$this->up_cotizacion_detalle($param,$cotizacion);
+				return $cotizacion;
+			}else{
+				return 0;
+			}
+		}
+
+		function up_cotizacion_detalle($param, $cotizacion){
+			$total = count($param['productos']);
+			if($total>0){
+
+				$this->db->where('idcotizacion', $cotizacion);
+				$q = $this->db->delete('cotizacion_detalle');
+
+				if($q){
+					
+					for($i=0;$i<$total;$i++){
+						$datos = array("idcotizacion"=>$cotizacion,
+										"idproducto"=>$param['productos'][$i],
+										"unidades"=>$param['unidades'][$i],
+										"descripcion"=>$param['descripciones'][$i],
+										"neto"=>$param['netos'][$i],
+										"afecto_iva"=>$param['afecto'][$i]
+										);
+						@$this->db->insert('cotizacion_detalle', $datos);
+					}
+				}
+
+			}
+		}
 	}
+	
 ?>

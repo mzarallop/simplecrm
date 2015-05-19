@@ -11,7 +11,8 @@ class Gestion extends CI_Controller {
 	{
 			$this->usuarios->verificar_login();
 			$datos['css'] = array("bootstrap.css", "bootstrap.min.css");
-			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js", "gestion/gestion.js", "moneda.min.js");
+			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js", 
+							"gestion/gestion.js", "moneda.min.js", "gestion/llamadas.js");
 			$datos['title'] = 'Gestión';
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
 			$this->load->database();
@@ -81,7 +82,7 @@ class Gestion extends CI_Controller {
 		$post = @$_POST;
 		switch($post['case']){
 			case 1:
-				$r = @$this->mod_gestion->reporte_gestion();
+				$r = @$this->mod_gestion->reporte_gestion($_POST);
 				echo json_encode($r);
 			break;
 			case 2:

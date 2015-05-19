@@ -157,7 +157,9 @@ class mod_crm extends CI_Model{
 	}
 
 	function crear_gestion($obj){
-		$datos = array(
+		
+		
+			$datos = array(
 				"idvendedor"=>$this->vendedor['ID'],
 				"idcamp"=>1,
 				"rbd"=>$obj['rbd'],
@@ -168,7 +170,7 @@ class mod_crm extends CI_Model{
 				"hora_agendamiento"=>$obj['hora_agenda'],
 				"idproducto"=>$obj['producto']
 				);
-
+			
 		if($this->db->insert('core_cliente_gestion', $datos)){
 			$id = $this->db->insert_id();
 			//marcar interes del prospecto
@@ -184,7 +186,7 @@ class mod_crm extends CI_Model{
 			}
 
 			#preparar la asignacion del cliente al vendedor si este no lo tiene asignado
-			if($obj['gestion']==5||$obj['gestion']==31){//solo si es presentacion
+			if($obj['gestion']==5||$obj['gestion']==39){//solo si es presentacion
 				$this->asignar_al_vendedor($obj);
 			}
 
@@ -197,20 +199,48 @@ class mod_crm extends CI_Model{
 		}
 	}
 
+	function crear_gestion_vendedor($obj_cambio, $obj){
+		
+			$datos = $obj_cambio;
+		
+		if($this->db->insert('core_cliente_gestion', $datos)){
+			$id = $this->db->insert_id();
+			//marcar interes del prospecto
+			$total_interes = count($obj['interes']);
+			if($total_interes>0)
+			{
+
+				foreach($obj['interes'] as $int){
+					$interes = array("rbd"=>$obj['rbd'], "proyecto"=>$int, "idgestion"=>$id);
+					$this->db->insert('core_cliente_interes', $interes);
+				}
+
+			}
+			$this->db->where('RBD', $obj['rbd']);
+			$this->db->update('core_clientes_sep', array("ULTIMA_GESTION"=>$id));
+			return $id;
+		}else{
+			return 0;
+		}
+	}
+
 	function asignar_al_vendedor($obj){
 		
+		if($obj['gestion'] == 39){$gestion = 2;}
+		elseif($obj['gestion'] == 5){$gestion = 31;}
+
 		$this->db->where('idusuario', $obj['responsable']);
 		$this->db->where('idrbd', $obj['rbd']);
 		$query = $this->db->get('core_clientes_asignaciones');
 		$total_asignaciones = $query->num_rows();
-
+		
 		#renombrar la gestón al vendedor
 		$datos_gestion = array(
 				"idvendedor"=>$obj['responsable'],
 				"idcamp"=>1,
 				"rbd"=>$obj['rbd'],
 				"responsable"=>$obj['responsable'],
-				"idgestion"=>$obj['gestion'],
+				"idgestion"=>$gestion,
 				"observaciones"=>$obj['observaciones'],
 				"fecha_agendamiento"=>$obj['fecha_agenda'],
 				"hora_agendamiento"=>$obj['hora_agenda'],
@@ -219,14 +249,13 @@ class mod_crm extends CI_Model{
 
 		
 		if($total_asignaciones>0){
-			$this->crear_gestion($datos_gestion);
+			$this->crear_gestion_vendedor($datos_gestion, $obj);
 			return true;
 			
-
 		}else{
-
+			$this->crear_gestion_vendedor($datos_gestion);
 			$datos = array("idrbd"=>$obj['rbd'], "idusuario"=>$obj['responsable'], "idasignador"=>$this->vendedor['ID']);
-			$this->crear_gestion($datos_gestion);
+			
 			return $this->db->insert('core_clientes_asignaciones', $datos);
 			
 

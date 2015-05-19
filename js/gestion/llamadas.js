@@ -1,166 +1,202 @@
 
+function capsula_llamada(obj) {
+
+    var procesar = $.ajax({
+        url: obj.path,        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: obj,
+    })
+
+    var resultado = {
+        fuente: procesar.responseText,
+        origen:procesar
+    }
+
+    return resultado
+
+} 
+
+function traer_usuarios_anexos(){
+    var datos = {path:'gestion/ajax/', case:2}
+    var procesar = capsula(datos)
+    var data = JSON.parse(procesar.fuente)
+    var vector_u = new Array
+    //limita a los usuarios activos
+    $.each(data, function(){
+        if(parseInt(this.visible) ===1){
+            if(parseInt(this.IDPERFIL)===2){
+                vector_u.push(this)    
+            }
+        }
+    })
+    return vector_u
+}
 
 function reporte_llamadas(){
-    var datos = {path:'clientes/ajax/', case:32, inicio:$("#inicio").val(), termino:$("#termino").val()}
-    var procesar = capsula(datos)
-    var data = JSON.parse(procesar.fuente)
-    var html = tmp_reporte_llamadas(data)
-    $("#uso").html(html)
-    $('#otro a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    })
-}
 
-function tmp_reporte_llamadas(obj){
-
-    var html = '<div class="tabbable tabs-left"><ul id="myTab" class="nav nav-tabs">'
-        html+='<li class="active"><a href="#resumen" data-toggle="tab" style="background-color: cadetblue;color: white;""><b>Resumen</b></a></li>'
-        $.each(obj, function(){
-        html+='<li><a href="#vendedor_'+this.usuario.ID+'" data-toggle="tab">'+this.usuario.NOM_EJECUTIVO+'</a></li>'
-        })
-    html+='</ul>'
-    html+='<div id="myTabContent" class="tab-content">'
-        html+='<div class="tab-pane fade in active" id="resumen">'
-            html+=tmp_reporte_llamadas_resumen(obj)
-        html+='</div>'
-        $.each(obj, function(){
-        html+='<div class="tab-pane fade" id="vendedor_'+this.usuario.ID+'">'
-                html+='<h1>'+this.usuario.NOM_EJECUTIVO+'</h1>'
-                html+='<ul id="otro" class="nav nav-tabs">'
-                html+='<li class="active"><a href="#detalle_cotizacion_'+this.usuario.ID+'" data-toggle="tab">Detalle de cotizaciones</a></li>'
-                html+='<li class=""><a href="#detalle_llamadas_'+this.usuario.ID+'" data-toggle="tab">Detalle de llamadas</a></li>'
-                html+='</ul>'
-                html+='<div id="otroContent" class="tab-content">'
-                html+='<div class="tab-pane fade in active caja_detalle_vendedor" id="detalle_cotizacion_'+this.usuario.ID+'">'
-                var arreglo = {vendedor:this.usuario.ID,inicio:$("#inicio").val(), termino:$("#termino").val()}
-                html+=reporte_cotizaciones(arreglo)
-                html+='</div>'
-                html+='<div class="tab-pane fade in caja_detalle_vendedor" id="detalle_llamadas_'+this.usuario.ID+'">'
-                html+=tmp_llamadas(this.llamadas)
-                html+='</div>'
-            html+='</div>'
-        html+='</div>'    
-        })
-    html+='</div></div>'
-
-    return html
-}
-
-function tmp_reporte_llamadas_resumen(obj){
-    var html = '<table class="table table-condensed table-striped">'
-        html+='<thead><tr>'
-        html+='<th>Nombre del ejecutivo</th>'
-        html+='<th>Anexo</th>'
-        html+='<th>Primera llamada</th>'
-        html+='<th>Números discados</th>'
-        html+='<th>1 a 3 mín.</th>'
-        html+='<th>3 a 5 mín.</th>'
-        html+='<th>más de 5 mín.</th>'
-        html+='<th>N cotizaciones</th>'
-        html+='<th>Neto MM</th>'
-        html+='</tr></thead><tbody>'
-    $.each(obj, function(){
-        html+='<tr>'
-        html+='<td>'+this.usuario.NOM_EJECUTIVO+'</td>'
-        html+='<td>'+this.usuario.ANEXO+'</td>'
-        var total_llamadas = parseInt(this.llamadas.length)
-        if(total_llamadas > 0){
-            var primera = this.llamadas.pop()
-               html+='<td>'+primera.calldate+'</td>'
-        }else{
-                html+='<td>No registra</td>'
-        }
-
-        
-        html+='<td>'+total_llamadas+'</td>'
-        var contestadas = new Array
-        var tres = new Array
-        var cinco = new Array
-        var ideal = new Array
-        var data_rc = {vendedor:this.usuario.ID, inicio:$("#inicio").val(), termino:$("#termino").val() }
-        var rc = reporte_cotizaciones_resumen(data_rc)
-        $.each(this.llamadas, function(){
-            
-                var seg = parseInt(this.duration)
-                if(seg>60 && seg<=180){
-                    tres.push(this)
-                }
-                else if(seg>180 && seg<=300){
-                    cinco.push(this)
-                }
-                else if(seg>300){
-                    ideal.push(this)
-                }
-            
-        })
-        html+='<td>'+tres.length+'</td>'
-        html+='<td>'+cinco.length+'</td>'
-        html+='<td>'+ideal.length+'</td>'
-        html+='<td>'+rc.length+'</td>'
-        var total_mm = 0
-        $.each(rc, function(){
-            total_mm+=parseInt(this.neto)
-        })
-            total_mm = (total_mm/1000000)
-        html+='<td>'+total_mm.toFixed(1)+' MM</td>'
-        html+='</tr>'
-    })
-    html+='</tbody></table>'
-
-    return html
-}
-
-function ver_detalle_llamadas(usuario,anexo){
+    var usuarios = traer_usuarios_anexos()
     
-    var datos = {usuario:usuario, anexo:anexo, case:1, path:'asterisk/ajax/'}
-    var procesar = capsula(datos)
-    var data = JSON.parse(procesar.fuente)
-    var html = tmp_llamadas(data)
-    //bootbox.alert(html)
-    return html
+            var inicio = $("#inicio").val()
+            var termino = $("#termino").val()
+            var resultado  = new Array    
+            
+            $.each(usuarios, function(){
+                var buscar_llamadas = {path:'http://192.168.50.100/api/', inicio:inicio, termino:termino, anexo:this.ANEXO}
+                var procesar = capsula_llamada(buscar_llamadas)
+                var data = JSON.parse(procesar.fuente)
+                
+                resultado.push({usuario:this, llamadas:data})
+            })
+    var nucleo = {inicio:inicio, termino:termino}        
+    //console.log(resultado, 'callback realizado')
+    var html_reporte_llamadas = tmp_reporte_llamadas(resultado, nucleo)
+    $("#reporte_llamadas").html(html_reporte_llamadas)
+    $(".capa").hide()
+    $("#reporte_llamadas").fadeIn()
 }
 
-function reporte_cotizaciones(obj)
-{
-    var datos = {vendedor:obj.vendedor, case:33, path:'clientes/ajax/', inicio:obj.inicio, termino:obj.termino}
-    var procesa = capsula(datos)
-    var data = JSON.parse(procesa.fuente)
-    var html = tmp_reporte_cotizaciones_nuevo(data)
-    return html
-}
-
-function reporte_cotizaciones_resumen(obj)
-{
-    var datos = {vendedor:obj.vendedor, case:33, path:'clientes/ajax/', inicio:obj.inicio, termino:obj.termino}
-    var procesa = capsula(datos)
-    var data = JSON.parse(procesa.fuente)
-    return data
-}
-
-function tmp_reporte_cotizaciones_nuevo(obj)
-{
-    var html = '<table class="table table-condensed table-striped">'
-            html+='<tr>'
-            html+='<td>RBD</td>'
-            html+='<td>Contacto</td>'
-            html+='<td>Nombre colegio</td>'
-            html+='<td>Monto Neto</td>'
-            html+'</tr>'
+function tmp_reporte_llamadas(obj, nucleo){
+        var html = '<h2>Resumen de llamadas</h2>Registro de las llamadas realizadas entre el '+nucleo.inicio+' y el '+nucleo.termino
+            html+= '<table class="table table-condensed table-striped">'
+            html+='<thead><tr>'
+            html+='<th>EJECUTIVOS</th>'    
+            html+='<th>ANEXO</th>'    
+            html+='<th>TOTAL LLAMADAS</th>'    
+            html+='<th>1° LLAMADA</th>'    
+            html+='<th>[0-1] min</th>'    
+            html+='<th>[1-3] min</th>'    
+            html+='<th>[3-5] min</th>'    
+            html+='<th>[+5] min</th>'    
+            html+='<th>Acciones</th>'    
+            html+='</tr></thead><tbody>'
+            var suma_total_llamadas = 0
+            var suma_seg1 = 0
+            var suma_seg2 = 0
+            var suma_seg3 = 0
+            var suma_seg4 = 0
         $.each(obj, function(){
             html+='<tr>'
-            html+='<td>'+this.rbd+'</td>'
-            html+='<td>'+this.contacto+'</td>'
-            html+='<td>'+this.colegio+'</td>'
-            html+='<td>'+this.neto+'</td>'
-            html+'</tr>'
+            html+='<td>'+this.usuario.NOM_EJECUTIVO+'</td>'    
+            html+='<td>'+this.usuario.ANEXO+'</td>'    
+            html+='<td>'+this.llamadas.length+'</td>' 
+            suma_total_llamadas=suma_total_llamadas+parseInt(this.llamadas.length)
+            if(parseInt(this.llamadas.length)>0)
+            {
+                html+='<td>'+this.llamadas[0].calldate+'</td>' 
+                //segmentos de llamdas
+                var seg1 = new Array
+                var seg2 = new Array 
+                var seg3 = new Array 
+                var seg4 = new Array
+
+                $.each(this.llamadas, function(){
+                    var segundos = parseInt(this.duration)
+                    if(segundos>0 && segundos<=60){
+                        seg1.push(this)
+                    }else if(segundos >=60.01 && segundos <= 180){
+                        seg2.push(this)
+                    }else if(segundos>=180.1 && segundos<=300){
+                        seg3.push(this)
+                    }else if(segundos>=300.1){
+                        seg4.push(this)
+                    }
+                
+                })   
+                html+='<td style="text-align:center">'+seg1.length+'</td>'
+                html+='<td style="text-align:center">'+seg2.length+'</td>'
+                html+='<td style="text-align:center">'+seg3.length+'</td>'
+                html+='<td style="text-align:center">'+seg4.length+'</td>'   
+                suma_seg1+= suma_seg1+parseInt(seg1) 
+                suma_seg2+= suma_seg2+parseInt(seg2) 
+                suma_seg3+= suma_seg3+parseInt(seg3) 
+                suma_seg4+= suma_seg4+parseInt(seg4) 
+            }else{
+                html+='<td></td>' 
+                html+='<td style="text-align:center">0</td>'
+                html+='<td style="text-align:center">0</td>'
+                html+='<td style="text-align:center">0</td>'
+                html+='<td style="text-align:center">0</td>'    
+                suma_seg1+= suma_seg1+parseInt(0) 
+                suma_seg2+= suma_seg2+parseInt(0) 
+                suma_seg3+= suma_seg3+parseInt(0) 
+                suma_seg4+= suma_seg4+parseInt(0) 
+            }   
+            
+            html+='<td style="text-align:center">'
+                html+='<button class="btn btn-mini" title="Ver detalle llamadas" onclick="ver_detalle_llamadas('+this.usuario.ANEXO+')"><i class="icon-search"></i></button>'
+            html+='</td>'
+            html+='</tr>'
         })
-    html+='</table>'
+            html+='<tr>'
+            html+='<td colspan="2">Totales</td>'
+            
+            html+='<td>'+suma_total_llamadas+'</td>'
+            html+='<td></td>'
+            html+='<td>'+suma_seg1+'</td>'
+            html+='<td>'+suma_seg2+'</td>'
+            html+='<td>'+suma_seg3+'</td>'
+            html+='<td>'+suma_seg3+'</td>'
+            html+='</tr>'
+        
+        html+='</tbody></table>'
     return html
 }
 
-function ver_detalle_vendedor(id, vendedor){
-    var ref = $(id).attr('href')
-    $(".caja_detalle_vendedor").removeClass('active')
-    $(".tab-content > "+ref+"_"+vendedor).addClass('active')
+function ver_detalle_llamadas(anexo){
+            var inicio = $("#inicio").val()
+            var termino = $("#termino").val()
+            var resultado  = new Array    
+            var buscar_llamadas = {path:'http://192.168.50.100/api/', inicio:inicio, termino:termino, anexo:anexo}
+            var datos = capsula_llamada(buscar_llamadas)
+            var data = JSON.parse(datos.fuente);
+            
+            var seg1 = new Array
+            var seg2 = new Array 
+            var seg3 = new Array 
+            var seg4 = new Array
+
+            $.each(data, function(){
+                var segundos = parseInt(this.duration)
+                if(segundos>0 && segundos<=60){
+                    seg1.push(this)
+                }else if(segundos >=60.01 && segundos <= 180){
+                    seg2.push(this)
+                }else if(segundos>=180.1 && segundos<=300){
+                    seg3.push(this)
+                }else if(segundos>=300.1){
+                    seg4.push(this)
+                }
+            })
+        var html = '<h4>Detalle de llamadas por segmentos</h4>'
+        html+=tmp_plantilla_segmento(seg1, 'Segmento [0-1] min.')
+        html+=tmp_plantilla_segmento(seg2, 'Segmento [1-3] min.')
+        html+=tmp_plantilla_segmento(seg3, 'Segmento [3-5] min.')
+        html+=tmp_plantilla_segmento(seg4, 'Segmento [+5] min.')
+
+        $("#detalle_llamadas").html(html)
+        $(".capa").hide()
+        $("#detalle_llamadas").fadeIn()
+}
+
+function tmp_plantilla_segmento(obj, title){
+    var html = '<p><div class="panel_llamadas">'
+        html+='<h5>'+title+'</h5>'
+        html+='<table class="table table-striped table-condensed">'
+        $.each(obj, function(){
+            html+='<tr>'
+            html+='<td>'+this.calldate+'</td>'
+            html+='<td>'+this.dst+'</td>'
+            html+='<td>'+this.tiempo+'</td>'
+            html+='<td style="text-align:right">'
+                html+='<audio controls="play-pause">'
+                html+='<source src="http://192.168.50.100/audio/'+this.carpeta+'/'+this.recordingfile+'" type="audio/wav">'
+                html+='</audio>'
+            html+='</td>'
+            html+='</tr>'    
+        })
+        
+        html+='</table>'
+        html+='</div></p>'
+        return html
 }

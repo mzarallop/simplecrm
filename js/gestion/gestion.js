@@ -11,11 +11,20 @@ function asignar_carteras(){
 	$("#cargar_carteras").fadeIn()
 }
 function reporte_gestion(){
-	var datos = {path:'gestion/ajax', case:1}
+	var inicio=$("#inicio").val()
+	var termino=$("#termino").val()
+	var datos = {
+				path:'gestion/ajax', 
+				case:1, 
+				inicio:inicio, 
+				termino:termino
+			}
 	var procesar = capsula(datos)
 	var data = JSON.parse(procesar.fuente)
-	var html_reporte = tmp_reporte_gestion(data)
+	var html_reporte = tmp_reporte_gestion(data, datos)
 	$("#reporte_gestion").html(html_reporte)
+	$(".capa").hide()
+	$("#reporte_gestion").fadeIn()
 }
 
 function traer_usuarios(){
@@ -89,55 +98,154 @@ function tmp_usuarios(obj){
 	return html
 }
 
-function tmp_reporte_gestion(obj){
+function tmp_reporte_gestion(obj, datos){
 
 	var html = '<h3>Reporte de gestión</h3>'
 	$.each(obj, function(){
 		//filtrar_por perfiles
 		var cargo = this.perfil.nombre
 		html+='<p><h5>'+this.perfil.nombre+' ('+this.perfil.grupo+')</h5>'
-		html+='<table class="table table-condensed table-striped table-bordered" style="font-size:11px">'
-			html+='<thead><tr>'
-			html+='<th>Corr</th>'
-			html+='<th>Nombre</th>'
-			html+='<th>Cargo</th>'
-			html+='<th>Asignación</th>'
-			html+='<th>Meta</th>'
-			html+='<th>Presentaciones</th>'
-			html+='<th>Oportunidades</th>'
-			html+='<th>Total Neto</th>'
-			html+='<th>% op / asig</th>'
-			html+='</tr></thead><tbody>'
-			var cont = 1;
-			$.each(this.asesores, function(){
-			html+='<tr><td>'+cont+'</td>'
-			html+='<td>'+this.vendedor.vendedor+'</td>'
-			html+='<td>'+cargo+'</td>'
-			html+='<td>'+this.vendedor.asignacion+'</td>'
-			html+='<td>60</td>'
-			//presentaciones
-				var presentaciones = 0
-				$.each(this.acciones, function(){
-					if(parseInt(this.id)===5||parseInt(this.id)===35||parseInt(this.id)===31){
-						presentaciones = presentaciones+parseInt(this.total_gestion)
-					}
-				})
-			html+='<td>'+presentaciones+'</td>'
-			var oportunidades= 0;
-			if(parseInt(this.cotizaciones.total_cotizacion)>0){
-				oportunidades = this.cotizaciones.total_cotizacion
-				html+='<td>'+this.cotizaciones.total_cotizacion+'</td>'
-				html+='<td>'+accounting.formatMoney(this.cotizaciones.total_final, "$ ", 0, ".", ",")+'</td>'
-			}else{
-				html+='<td>0</td>'
-				html+='<td>$ 0</td>'
-			}
-			
-			html+='<td>'+(parseInt(oportunidades)/parseInt(this.vendedor.asignacion)*100).toFixed(0)+' % </td></tr>'
-			cont++
-			})
-			html+='</tbody></table></p>'
+		switch(parseInt(this.perfil.id)){
+			case 2:
+				html+= tmp_grupo_call(this.asesores, this.perfil.grupo, datos)
+			break;
+			case 3:
+				html+= tmp_grupo_terreno(this.asesores, this.perfil.grupo)
+			break;
+			case 4:
+				html+= tmp_grupo_cautivo(this.asesores, this.perfil.grupo, datos)
+			break;
+			case 5:
+				html+= tmp_grupo_masterclass(this.asesores, this.perfil.grupo, datos)
+			break;
+		}
+		
+		html+='</p>'
 	})
+	return html
+}
+
+function tmp_grupo_call(obj, cargo, datos){
+
+	var html = '<table class="table table-condensed table-bordered table-striped" style="font-size:11px">'
+		html+='<thead><tr>'
+		html+='<th>Ejecutivo</th>'
+		html+='<th>Asignacion</th>'
+		html+='<th>Anexo</th>'
+		html+='<th>Llamadas</th>'
+		html+='<th style="text-align:center">Volver a llamar</th>'
+		html+='<th style="text-align:center">Entrevista</th>'
+		html+='<th style="text-align:center">Presentación</th>'
+		html+='<th style="text-align:center">Interesado</th>'
+		html+='<th style="text-align:center">Cierre</th>'
+		html+='</tr></thead><tbody>'	
+		$.each(obj,function() {
+			var buscar_llamadas = {path:server+'central.php', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+            var procesar = capsula_llamada(buscar_llamadas)
+            var data = JSON.parse(procesar.fuente)
+			html+='<tr>'
+				html+='<td>'+this.vendedor.vendedor+'</td>'
+				html+='<td>'+this.vendedor.asignacion+'</td>'
+				html+='<td>'+this.vendedor.anexo+'</td>'
+				html+='<td>'+data.length+'</td>'
+				$.each(this.acciones, function(){
+					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
+				})
+			html+='</tr>'	
+		});
+	html+='</tbody></table>'
+	return html
+}
+
+function tmp_grupo_terreno(obj, cargo){
+
+	var html = '<table class="table table-condensed table-bordered table-striped" style="font-size:11px">'
+		html+='<thead><tr>'
+		html+='<th>Ejecutivo</th>'
+		html+='<th>Cargo</th>'
+		html+='<th>Asignacion</th>'
+		html+='<th style="text-align:center">Entrevista</th>'
+		html+='<th style="text-align:center">Oportunidad</th>'
+		html+='<th style="text-align:center">Presentación</th>'
+		html+='<th style="text-align:center">Cierre</th>'
+		html+='<th style="text-align:center">Cierre</th>'
+		html+='</tr></thead><tbody>'	
+		$.each(obj,function() {
+			html+='<tr>'
+				html+='<td>'+this.vendedor.vendedor+'</td>'
+				html+='<td>'+cargo+'</td>'
+				html+='<td>'+this.vendedor.asignacion+'</td>'
+				$.each(this.acciones, function(){
+					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
+				})
+			html+='</tr>'	
+		});
+	html+='</tbody></table>'
+	return html
+}
+
+function tmp_grupo_cautivo(obj, cargo, datos){
+
+	var html = '<table class="table table-condensed table-bordered table-striped" style="font-size:11px">'
+		html+='<thead><tr>'
+		html+='<th>Ejecutivo</th>'
+		html+='<th>Asignacion</th>'
+		html+='<th>Anexo</th>'
+		html+='<th>Llamadas</th>'
+		html+='<th style="text-align:center">Oportunidad</th>'
+		html+='<th style="text-align:center">Actualizacion</th>'
+		html+='<th style="text-align:center">Presentación</th>'	
+		html+='<th style="text-align:center">Cierre</th>'
+		html+='</tr></thead><tbody>'	
+		$.each(obj,function() {
+			var buscar_llamadas = {path:server+'central.php', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+            var procesar = capsula_llamada(buscar_llamadas)
+            var data = JSON.parse(procesar.fuente)
+			html+='<tr>'
+				html+='<td>'+this.vendedor.vendedor+'</td>'
+				html+='<td>'+this.vendedor.asignacion+'</td>'
+				html+='<td>'+this.vendedor.anexo+'</td>'
+				html+='<td>'+data.length+'</td>'
+				$.each(this.acciones, function(){
+					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
+				})
+			html+='</tr>'	
+		});
+	html+='</tbody></table>'
+	return html
+}
+
+function tmp_grupo_masterclass(obj, cargo, datos){
+
+	var html = '<table class="table table-condensed table-bordered table-striped" style="font-size:11px">'
+		html+='<thead><tr>'
+		html+='<th>Ejecutivo</th>'
+		html+='<th>Asignacion</th>'
+		html+='<th>Anexo</th>'
+		html+='<th>Llamadas</th>'
+		html+='<th style="text-align:center">Activación</th>'
+		html+='<th style="text-align:center">PM</th>'
+		html+='<th style="text-align:center">VT</th>'
+		html+='<th style="text-align:center">CG</th>'
+		html+='<th style="text-align:center">CP</th>'
+		html+='<th style="text-align:center">TA</th>'
+		html+='<th style="text-align:center">Renovación</th>'
+		html+='</tr></thead><tbody>'	
+		$.each(obj,function() {
+			var buscar_llamadas = {path:server+'central.php', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+            var procesar = capsula_llamada(buscar_llamadas)
+            var data = JSON.parse(procesar.fuente)
+			html+='<tr>'
+				html+='<td>'+this.vendedor.vendedor+'</td>'
+				html+='<td>'+this.vendedor.asignacion+'</td>'
+				html+='<td>'+this.vendedor.anexo+'</td>'
+				html+='<td>'+data.length+'</td>'
+				$.each(this.acciones, function(){
+					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
+				})
+			html+='</tr>'	
+		});
+	html+='</tbody></table>'
 	return html
 }
 

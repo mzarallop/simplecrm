@@ -531,19 +531,21 @@ function tmp_cotizacion(obj){
 		html+='<th>Fecha</th>'
 		html+='<th>Colegio</th>'
 		html+='<th>Monto neto</th>'
-		html+='<th>Estado</th>'
+		//html+='<th>Estado</th>'
+		html+='<th>% Cierre</th>'
 		html+='<th>Acciones</th>'
 		html+='</tr></thead><tbody>'
 		$.each(obj, function(){
 			html+='<tr>'
-			html+='<td>'+this.id+'</td>'
+			html+='<td style="text-align:center">'+this.id+'</td>'
 			html+='<td><span datetime="'+this.fecha+'" class="age">'+this.fecha+'</span></td>'
 			html+='<td>'+this.colegio+'</td>'
-			html+='<td>'+accounting.formatMoney(this.neto, "$ ", 0, ".", ",")+'</td>'
-			html+='<td>'+this.estado+'</td>'
+			html+='<td style="text-align:right">'+accounting.formatMoney(this.neto, "$ ", 0, ".", ",")+'</td>'
+			//html+='<td>'+this.estado+'</td>'
+			html+='<td style="text-align:center">'+this.porcentaje_cierre+'%</td>'
 			html+='<td>'
 			html+='<button class="btn btn-mini" onclick="ver_cotizacion('+this.id+')"><i class="icon-search"></i></button> '
-			html+='<button class="btn btn-mini" onclick="editar_cotizacion('+this.id+')"><i class="icon-pencil"></i></button> '
+			html+='<a href="'+server+'clientes/upcotizacion/'+this.id+'" class="btn btn-mini" target="_new"><i class="icon-pencil"></i></a> '
 			html+='<button class="btn btn-mini" onclick="eliminar_cotizacion('+this.id+')"><i class="icon-trash"></i></button>'
 			html+='</td>'
 			html+='</tr>'
@@ -725,4 +727,8 @@ function pintar_grafico(mes){
         })
 	//$('#gestion').append('<select name="" id="mes" onchange="pintar_grafico(this.value)"><option value="03">Marzo</option><option value="04">Abril</option><option value="05">Mayo</option></select>')
 
+}
+
+function editar_cotizacion(id){
+    window.location.href=server+"clientes/upcotizacion/"+id
 }

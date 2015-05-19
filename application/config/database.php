@@ -21,9 +21,9 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
-$db['asterisk']['hostname'] = '192.168.50.100';
+$db['asterisk']['hostname'] = 'localhost';
 $db['asterisk']['username'] = 'root';
-$db['asterisk']['password'] = 'xy4s251r';
+$db['asterisk']['password'] = '2015';
 $db['asterisk']['database'] = 'asteriskcdrdb';
 $db['asterisk']['dbdriver'] = 'mysqli';
 $db['asterisk']['dbprefix'] = '';

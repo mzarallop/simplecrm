@@ -4,7 +4,7 @@ class Mod_reportes extends CI_Model{
 	function __construct(){
 			
 			parent::__construct();
-			$this->central = $this->load->database('asterisk', TRUE);
+			//$this->central = $this->load->database('asterisk', TRUE);
 
 		}
 

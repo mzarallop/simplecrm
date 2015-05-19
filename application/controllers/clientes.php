@@ -163,9 +163,11 @@ class Clientes extends CI_Controller {
 	function cotizacion(){
 
 		$datos['rbd'] = $this->uri->segment(3);
+		$datos['idcotizacion'] = $this->uri->segment(4);
 		//$this->usuarios->verificar_login();
 		$this->load->model('Mod_clientes');
 		$this->load->model('mod_cotizaciones');
+		
 		$datos['productos'] = $this->mod_cotizaciones->categorias(0);
 		$datos['colegio'] = $this->mod_cotizaciones->datos_colegio($datos['rbd']);
 		$datos['usuario'] = $this->usuarios->datos_usuarios();
@@ -179,6 +181,32 @@ class Clientes extends CI_Controller {
 		$this->load->view('clientes/cotizacion', $datos);
 		$this->load->view('fijos/footer');
 	}
+
+	function upcotizacion(){
+
+		$datos['idcotizacion'] = $this->uri->segment(3);
+		//$this->usuarios->verificar_login();
+		$this->load->model('Mod_clientes');
+		$this->load->model('mod_cotizaciones');
+		
+		if(isset($datos['idcotizacion'])&&$datos['idcotizacion']>0){
+			$datos['cot'] = $this->mod_cotizaciones->traer_cotizacion(array("cotizacion"=>$datos['idcotizacion']));	
+		}
+
+		$datos['productos'] = $this->mod_cotizaciones->categorias(0);
+		$datos['colegio'] = $this->mod_cotizaciones->datos_colegio($datos['cot']['cotizacion']['rbd']);
+		$datos['usuario'] = $this->usuarios->datos_usuarios();
+		$datos['pago'] = $this->mod_cotizaciones->modo_pago();
+		$datos['css'] = array("clientes/clientes.css");
+		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js");
+		$datos['title'] = 'Módulo de cotizaciones';
+		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$this->load->view('fijos/head', $datos);
+		$this->load->view('fijos/menu', $datos);
+		$this->load->view('clientes/upcotizacion', $datos);
+		$this->load->view('fijos/footer');
+	}
+
 
 	function buscar_colegios(){
 		$this->usuarios->verificar_login();
@@ -370,12 +398,12 @@ class Clientes extends CI_Controller {
 		$this->usuarios->verificar_login();
 		$this->load->model('mod_clientes');
 		$this->load->library('lib_clientes');
-		$this->load->model('mod_reportes');
+		//$this->load->model('mod_reportes');
 		$this->load->library('table');
 		$this->load->model('mod_cotizaciones');
 		$this->load->model('mod_crm');
 		//$this->load->model('mod_master');
-		$this->load->model('modfacturas');
+		//$this->load->model('modfacturas');
 
 		switch(@$_POST['case'])
 		{
@@ -752,6 +780,11 @@ class Clientes extends CI_Controller {
 			break;
 			case 47://remover contacto
 				$r  = @$this->mod_crm->resumen_gestiones($_POST);
+				echo json_encode($r);
+			break;
+			case 48:
+				$r = @$this->mod_cotizaciones->actualizar_cotizacion($_POST);
+				//$r = $_POST;
 				echo json_encode($r);
 			break;
 		}
