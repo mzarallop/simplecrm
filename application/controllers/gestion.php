@@ -11,7 +11,7 @@ class Gestion extends CI_Controller {
 	{
 			$this->usuarios->verificar_login();
 			$datos['css'] = array("bootstrap.css", "bootstrap.min.css");
-			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js", 
+			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js",
 							"gestion/gestion.js", "moneda.min.js", "gestion/llamadas.js");
 			$datos['title'] = 'Gestión';
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
@@ -21,12 +21,12 @@ class Gestion extends CI_Controller {
 			$this->load->view('gestion/index', $datos);
 			$this->load->view('fijos/footer', $datos);
 	}
-	
+
 	function usuarios(){
-			
+
 			$this->usuarios->verificar_login();
 			$datos['css'] = array("bootstrap.css", "bootstrap.min.css");
-			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js", 
+			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js",
 							"gestion/gestion.js", "moneda.min.js", "gestion/llamadas.js");
 			$datos['title'] = 'Gestión';
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
@@ -40,31 +40,31 @@ class Gestion extends CI_Controller {
 	}
 
 	function carga_csv_asignacion(){
-			
-			$datos['css'] = array("bootstrap.css", "bootstrap.min.css");
-			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js", "gestion/gestion.js", "moneda.min.js");
-			$this->load->view('fijos/head', $datos);
-
-
+			$this->usuarios->verificar_login();
 			if(isset($_FILES['archivo'])){
 				if(@$_FILES['archivo']['size']>0){
 					$nombre = time().'.csv';
 					$estado = copy($_FILES['archivo']['tmp_name'], './asignaciones/'.$nombre);
-					
+
 					if($estado){
 						@$this->mod_gestion->cargar_asignacion(array("archivo"=>$nombre));
 						$file = './asignaciones/'.$nombre;
-						 
+
 						 $handle = fopen($file,"r");
 						 $vector = array();
 
-						 do { 
-					        if (@$data[0]) { 
-					           array_push($vector, $data[0]);
-					        } 
+						 do {
+					        if (@$data[0]) {
+					           array_push($vector, array("rbd"=>$data[0], "usuario"=>$data[1]));
+					        }
 					    } while ($data = fgetcsv($handle,1000,",","'"));
-						$datos = array("rbd"=>$vector, "usuario"=>$_POST['ejecutivo']);
-						@$this->mod_gestion->crear_asignacion($datos);
+
+
+						$r = $this->mod_gestion->crear_asignacion($vector, $_POST['forma_carga']);
+						echo $r;
+						echo '<pre>';
+						print_r($vector);
+						echo '</pre>';
 					}else{
 
 					}
@@ -73,10 +73,11 @@ class Gestion extends CI_Controller {
 					echo '<div class="alert">';
 	  				echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
 	  				echo '<strong>Advertencia!</strong> No se recibio ningun archivo CSV';
-					echo '</div>';	
+					echo '</div>';
 				}
 			}
 	}
+
 
 	function ajax(){
 		$post = @$_POST;

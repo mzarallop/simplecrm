@@ -6,7 +6,7 @@
 			<li><a href="javascript:;" onclick="mis_cotizaciones()">Mis Cotizaciones</a></li>
 			<li><a href="javascript:;" onclick="traer_cartera_gestion()">Resumen de gestiónes</a></li>
 		</ul>
-		
+
 	</div>
 	<div class="span10">
 	<input type="hidden" id="id_usuario" value="<?= $usuario[0]['ID'] ?>">
@@ -24,11 +24,11 @@
 	      	    	<th>Region</th>
 	      	    	<th>Comuna</th>
 	      	    	<th>SEP</th>
-	      	    	<th>SEP Anual</th>
+	      	    	<th>Dependencia</th>
 	      	    	<th>Fecha gestión</th>
 	      	    	<th>Última gestión</th>
 	      	    	<th data-orderable="false">Acciones</th>
-	      	    	
+
 	   	      	    </tr>
 	      	    </thead>
 	      	    <tbody>
@@ -41,8 +41,8 @@
 	      	    		<td><?= $mc['colegio']['REGION'] ?></td>
 	      	    		<td><?= $mc['colegio']['COMUNA'] ?></td>
 	      	    		<td><?= $mc['colegio']['ALUMNOS_SEP'] ?></td>
-	      	    		<?php $monto_sep = ($mc['colegio']['ALUMNOS_SEP']*35000*12); ?>
-	      	    		<td>$ <?= number_format($monto_sep,0, ",", ".") ?></td>
+	      	    		<?php //$monto_sep = ($mc['colegio']['ALUMNOS_SEP']*35000*12); ?>
+	      	    		<td><?= $mc['colegio']['DEPENDENCIA']?></td>
 	      	    		<td><time datetime="<?= $mc['colegio']['fecha_gestion'] ?>" class="age"><?= $mc['colegio']['fecha_gestion'] ?></time></td>
 	      	    		<td>
 	      	    			<span class="<?= $mc['colegio']['label'] ?>"><?= $mc['colegio']['gestion'] ?></span>
@@ -105,7 +105,7 @@
 	      	    	</div>
 	      	  </div>
 	      	  <div id="tipo_gestion" style="display:none"  class="capas" >
-	      	  	
+
 	      	  </div>
 	    </div>
 	</div>

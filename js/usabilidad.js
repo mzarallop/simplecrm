@@ -9,7 +9,8 @@ $(function() {
 
 function capsula(obj) {
 
-    var procesar = $.ajax({
+    var procesar = 
+    $.ajax({
         url: server + obj.path,
         type: 'post',
         dataType: 'json',

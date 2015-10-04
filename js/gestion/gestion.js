@@ -7,16 +7,16 @@ function gestionar_ejecutivos(){
 
 }
 function asignar_carteras(){
-	$(".capa").hide()	
+	$(".capa").hide()
 	$("#cargar_carteras").fadeIn()
 }
 function reporte_gestion(){
 	var inicio=$("#inicio").val()
 	var termino=$("#termino").val()
 	var datos = {
-				path:'gestion/ajax', 
-				case:1, 
-				inicio:inicio, 
+				path:'gestion/ajax',
+				case:1,
+				inicio:inicio,
 				termino:termino
 			}
 	var procesar = capsula(datos)
@@ -119,7 +119,7 @@ function tmp_reporte_gestion(obj, datos){
 				html+= tmp_grupo_masterclass(this.asesores, this.perfil.grupo, datos)
 			break;
 		}
-		
+
 		html+='</p>'
 	})
 	return html
@@ -138,9 +138,9 @@ function tmp_grupo_call(obj, cargo, datos){
 		html+='<th style="text-align:center">Presentación</th>'
 		html+='<th style="text-align:center">Interesado</th>'
 		html+='<th style="text-align:center">Cierre</th>'
-		html+='</tr></thead><tbody>'	
+		html+='</tr></thead><tbody>'
 		$.each(obj,function() {
-			var buscar_llamadas = {path:server+'central.php', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+			var buscar_llamadas = {path:'http://186.67.137.90:8080/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
             var procesar = capsula_llamada(buscar_llamadas)
             var data = JSON.parse(procesar.fuente)
 			html+='<tr>'
@@ -151,7 +151,7 @@ function tmp_grupo_call(obj, cargo, datos){
 				$.each(this.acciones, function(){
 					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
 				})
-			html+='</tr>'	
+			html+='</tr>'
 		});
 	html+='</tbody></table>'
 	return html
@@ -169,7 +169,7 @@ function tmp_grupo_terreno(obj, cargo){
 		html+='<th style="text-align:center">Presentación</th>'
 		html+='<th style="text-align:center">Cierre</th>'
 		html+='<th style="text-align:center">Cierre</th>'
-		html+='</tr></thead><tbody>'	
+		html+='</tr></thead><tbody>'
 		$.each(obj,function() {
 			html+='<tr>'
 				html+='<td>'+this.vendedor.vendedor+'</td>'
@@ -178,7 +178,7 @@ function tmp_grupo_terreno(obj, cargo){
 				$.each(this.acciones, function(){
 					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
 				})
-			html+='</tr>'	
+			html+='</tr>'
 		});
 	html+='</tbody></table>'
 	return html
@@ -194,11 +194,11 @@ function tmp_grupo_cautivo(obj, cargo, datos){
 		html+='<th>Llamadas</th>'
 		html+='<th style="text-align:center">Oportunidad</th>'
 		html+='<th style="text-align:center">Actualizacion</th>'
-		html+='<th style="text-align:center">Presentación</th>'	
+		html+='<th style="text-align:center">Presentación</th>'
 		html+='<th style="text-align:center">Cierre</th>'
-		html+='</tr></thead><tbody>'	
+		html+='</tr></thead><tbody>'
 		$.each(obj,function() {
-			var buscar_llamadas = {path:server+'central.php', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+			var buscar_llamadas = {path:'http://186.67.137.90:8080/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
             var procesar = capsula_llamada(buscar_llamadas)
             var data = JSON.parse(procesar.fuente)
 			html+='<tr>'
@@ -209,7 +209,7 @@ function tmp_grupo_cautivo(obj, cargo, datos){
 				$.each(this.acciones, function(){
 					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
 				})
-			html+='</tr>'	
+			html+='</tr>'
 		});
 	html+='</tbody></table>'
 	return html
@@ -230,9 +230,9 @@ function tmp_grupo_masterclass(obj, cargo, datos){
 		html+='<th style="text-align:center">CP</th>'
 		html+='<th style="text-align:center">TA</th>'
 		html+='<th style="text-align:center">Renovación</th>'
-		html+='</tr></thead><tbody>'	
+		html+='</tr></thead><tbody>'
 		$.each(obj,function() {
-			var buscar_llamadas = {path:server+'central.php', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+			var buscar_llamadas = {path:'http://186.67.137.90:8080/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
             var procesar = capsula_llamada(buscar_llamadas)
             var data = JSON.parse(procesar.fuente)
 			html+='<tr>'
@@ -243,7 +243,7 @@ function tmp_grupo_masterclass(obj, cargo, datos){
 				$.each(this.acciones, function(){
 					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
 				})
-			html+='</tr>'	
+			html+='</tr>'
 		});
 	html+='</tbody></table>'
 	return html
@@ -253,7 +253,7 @@ function modificar_usuario(id){
 		var datos={path:'gestion/ajax', case:2, id:id}
 		var procesar = capsula(datos)
 		var data = JSON.parse(procesar.fuente)
-		
+
 		var msn = '<h1>Modificar Usuario</h1><table class="table table-condensed table-striped">'
 			msn+='<tr>'
 			msn+='<td>Nombre:<br><input type="text" id="nombre_usuario" value="'+data[0].NOM_EJECUTIVO+'"/></td>'
@@ -269,7 +269,7 @@ function modificar_usuario(id){
 			}else{
 				msn+='<td>Estado:<br><input type="radio" name="visible" value="1"/> Activado <br> <input type="radio" name="visible" value="0" checked="true"/> Desactivado</td>'
 			}
-			
+
 			msn+='<td>Anexo:<br><input type="text" id="anexo_usuario" value="'+data[0].ANEXO+'" /></td>'
 			msn+='</tr>'
 			msn+='</table>'
@@ -312,8 +312,8 @@ function agregar_usuario(){
 				msn+='<option value="2" selected>Asesor Telefónico</option>'
 				msn+='<option value="3">Asesor Terreno</option>'
 				msn+='<option value="4">Clientes cautivos</option>'
-				msn+='<option value="5">Asesor Masterclass</option>'				
-				msn+='<option value="1">Supervisor</option>'				
+				msn+='<option value="5">Asesor Masterclass</option>'
+				msn+='<option value="1">Supervisor</option>'
 			msn+='</select>'
 			msn+='</td>'
 			msn+='<td></td>'

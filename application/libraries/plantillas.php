@@ -18,8 +18,8 @@ class plantillas{
 		$div ='<table><tr><td width="50%"><img src="'.base_url().'/img/logo_kdoce.png" width="130"/></td><td width="50%">
 				<div style="text-align:right;font-size:11px">
 					<b>KDOCE soluciones educativas</b><br>
-				Monitor Araucano 10<br>
-				Providencia - Santiago R. Metropolitana<br>
+				Avenida Baucheff 1171<br>
+				Santiago R. Metropolitana<br>
 				Teléfono: (02)599 49 93<br>
 				</div></td></tr></table>';
 		$div.='<br><br><div style="font-size:11px">Estimado (a): <b>'.$obj['col']['contacto'].'</b><br>';
@@ -117,7 +117,7 @@ class plantillas{
 			$div.='<div style="border:1px solid rgb(238,238,238)">'.$obj['col']['observaciones'].'<br></div>';
 			//mensaje final
 			$div.='<div>Esperando que la presente cotización sea de su agrado, sin otro particular le saluda atentamente.<br><br>
-			<div style="font-size:12px;"><b>'.$obj['col']['ejecutivo'].'</b><br>Ejecutivo comercial<br>Kdoce Soluciones Educativas.<br><a href="http://www.kdoce.cl">www.kdoce.cl</a></div></div></div>';
+			<div style="font-size:12px;"><b>'.$obj['col']['ejecutivo'].'</b><br>Asesor(a) de proyectos<br>Kdoce Soluciones Educativas.<br><a href="http://www.kdoce.cl">www.kdoce.cl</a></div></div></div>';
 			return $div;
 	}
 } 
