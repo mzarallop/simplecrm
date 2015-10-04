@@ -179,7 +179,7 @@ class mod_gestion extends CI_Model{
 		if(isset($obj['entrevista']) && count($obj['entrevista'])>0){
 
 		$entrevista = $obj['entrevista'];
-		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP, TELEFONO, DEPENDENCIA, COMUNA, CLASIFICACION, MATRICULA');
 		$this->db->where_in('RBD', $entrevista);
 		$this->db->group_by('RBD');
 		$entr = $this->db->get('core_clientes_sep');
@@ -192,7 +192,7 @@ class mod_gestion extends CI_Model{
 		//presentacion
 		if(isset($obj['presentacion']) && count($obj['presentacion'])>0){
 		$presentacion = $obj['presentacion'];
-		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP, TELEFONO, DEPENDENCIA, COMUNA, CLASIFICACION, MATRICULA');
 		$this->db->where_in('RBD', $presentacion);
 		$this->db->group_by('RBD');
 		$pres = $this->db->get('core_clientes_sep');
@@ -203,7 +203,7 @@ class mod_gestion extends CI_Model{
 		//cierre
 		if(isset($obj['cierre']) && count($obj['cierre'])>0){
 		$cierre = $obj['cierre'];
-		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP, TELEFONO, DEPENDENCIA, COMUNA, CLASIFICACION, MATRICULA');
 		$this->db->where_in('RBD', $cierre);
 		$this->db->group_by('RBD');
 		$cier = $this->db->get('core_clientes_sep');
@@ -214,7 +214,7 @@ class mod_gestion extends CI_Model{
 		//interesados
 		if(isset($obj['interesados']) && count($obj['interesados'])>0){
 		$intenresados = $obj['interesados'];
-		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP, TELEFONO, DEPENDENCIA, COMUNA, CLASIFICACION, MATRICULA');
 		$this->db->where_in('RBD', $interesados);
 		$this->db->group_by('RBD');
 		$inte = $this->db->get('core_clientes_sep');
