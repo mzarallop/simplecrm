@@ -1,3 +1,6 @@
+<script>
+	$(function(){reporte_gestion()})
+</script>
 <div class="row-fluid">
 <div class="span3">
 	<div class="filtro_fecha">

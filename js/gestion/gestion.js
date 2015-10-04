@@ -1,6 +1,3 @@
-$(function(){
-	reporte_gestion()
-})
 function gestionar_ejecutivos(){
 	$(".capa").hide()
 	$("#listado_usuario").fadeIn()
