@@ -173,4 +173,48 @@ class mod_gestion extends CI_Model{
 		return $this->db->insert('core_usuarios', $datos);
 	}
 
+	function volcar_colegios($obj){
+		$datos = array();
+		//entrevistas
+		if(isset($obj['entrevista']) && count($obj['entrevista'])>0){
+
+		$entrevista = implode(',', $obj['entrevista']);
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->where_in('RBD', $entrevista);
+		$this->db->group_by('RBD');
+		$entr = $this->db->get('core_clientes_sep');
+		$datos["entrevista"] = $entr->result_array();
+
+		}
+
+		//presentacion
+		if(isset($obj['presentacion']) && count($obj['presentacion'])>0){
+		$presentacion = implode(',', $obj['presentacion']);
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->where_in('RBD', $presentacion);
+		$this->db->group_by('RBD');
+		$pres = $this->db->get('core_clientes_sep');
+			$datos['presentacion'] = $pres->result_array();
+		}
+		//cierre
+		if(isset($obj['cierre']) && count($obj['cierre'])>0){
+		$cierre = implode(',', $obj['cierre']);
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->where_in('RBD', $cierre);
+		$this->db->group_by('RBD');
+		$cier = $this->db->get('core_clientes_sep');
+			$datos["cierre"] = $cier->result_array();
+		}
+		//interesados
+		if(isset($obj['interesados']) && count($obj['interesados'])>0){
+		$intenresados = implode(',', $obj['interesados']);
+		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP');
+		$this->db->where_in('RBD', $interesados);
+		$this->db->group_by('RBD');
+		$inte = $this->db->get('core_clientes_sep');
+			$datos["interesados"] = $inte->result_array();
+		}
+		return $datos;
+	}
+
 } ?>

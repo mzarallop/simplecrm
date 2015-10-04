@@ -107,12 +107,12 @@ function tmp_reporte_gestion(obj, datos){
 			case 3:
 				html+= tmp_grupo_terreno(this.asesores, this.perfil.grupo)
 			break;
-			case 4:
+			/*case 4:
 				html+= tmp_grupo_cautivo(this.asesores, this.perfil.grupo, datos)
 			break;
 			case 5:
 				html+= tmp_grupo_masterclass(this.asesores, this.perfil.grupo, datos)
-			break;
+			break;*/
 		}
 
 		html+='</p>'
@@ -134,6 +134,10 @@ function tmp_grupo_call(obj, cargo, datos){
 		html+='<th style="text-align:center">Interesado</th>'
 		html+='<th style="text-align:center">Cierre</th>'
 		html+='</tr></thead><tbody>'
+		var entrevista = new Array
+		var presentacion = new Array
+		var interesado = new Array
+		var cierre = new Array
 		$.each(obj,function() {
 			var buscar_llamadas = {path:'http://186.67.137.90:8080/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
             var procesar = capsula_llamada(buscar_llamadas)
@@ -145,9 +149,41 @@ function tmp_grupo_call(obj, cargo, datos){
 				html+='<td>'+data.length+'</td>'
 				$.each(this.acciones, function(){
 					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
+					var tipo = this.tipo.descripcion
+
+					$.each(this.detalle, function(){
+						switch(tipo){
+							case "Entrevista":
+								entrevista.push(this.rbd)
+							break;
+							case "Presentación":
+								presentacion.push(this.rbd)
+							break;
+							case "Prospecto Interesado":
+								interesado.push(this.rbd)
+							break;
+							case "Cierre":
+								cierre.push(this.rbd)
+							break;
+						}
+					})
+
 				})
+
 			html+='</tr>'
 		});
+		var data_colegios = {
+			entrevista:entrevista,
+			presentacion:presentacion,
+			interesado:interesado,
+			cierre:cierre,
+			path:'gestion/ajax/',
+			case:5
+		}
+
+		console.log(data_colegios, 'proceso')
+		var procesar = capsula(data_colegios)
+		var data = JSON.parse(procesar.fuente)
 	html+='</tbody></table>'
 	return html
 }
