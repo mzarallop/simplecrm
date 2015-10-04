@@ -172,20 +172,85 @@ function tmp_grupo_call(obj, cargo, datos){
 
 			html+='</tr>'
 		});
-		var data_colegios = {
+	html+='</tbody></table>'
+
+	var data_colegios = {
 			entrevista:entrevista,
 			presentacion:presentacion,
 			interesado:interesado,
 			cierre:cierre,
 			path:'gestion/ajax/',
 			case:5
-		}
+	}
 
-		console.log(data_colegios, 'proceso')
-		var procesar = capsula(data_colegios)
-		var data = JSON.parse(procesar.fuente)
-	html+='</tbody></table>'
+	var procesar = capsula(data_colegios)
+	var data = JSON.parse(procesar.fuente)
+	var html_colegios = tmp_colegios_html(data)
+
+	html+=html_colegios
+
 	return html
+}
+function tmp_colegios_html(obj){
+	var html = ''
+
+		html+='<ul id="myTab" class="nav nav-tabs">'
+		html+='<li class="active"><a href="#entrevista" data-toggle="tab">Entrevista</a></li>'
+		html+='<li><a href="#presentacion" data-toggle="tab">Presentación</a></li>'
+		html+='<li><a href="#interesados" data-toggle="tab">Interesados</a></li>'
+		html+='<li><a href="#cierre" data-toggle="tab">Cierre</a></li>'
+		html+='</ul>'
+		html+='<div id="myTabContent" class="tab-content">'
+
+				html+='<div class="tab-pane active" id="entrevista">'
+				html+='<table class="table table-condensed table-striped">'
+				$.each(obj.entrevista, function(){
+					html+='<tr>'
+					html+='<td>'+this.RBD+'</td>'
+					html+='<td>'+this.NOMBRE+'</td>'
+					html+='<td>'+this.ALUMNOS_SEP+'</td>'
+					html+='</tr>'
+				})
+				html+='</table>'
+				html+='</div>'
+
+				html+='<div class="tab-pane " id="presentacion">'
+				html+='<table class="table table-condensed table-striped">'
+				$.each(obj.presentacion, function(){
+					html+='<tr>'
+					html+='<td>'+this.RBD+'</td>'
+					html+='<td>'+this.NOMBRE+'</td>'
+					html+='<td>'+this.ALUMNOS_SEP+'</td>'
+					html+='</tr>'
+				})
+				html+='</div>'
+
+				html+='<div class="tab-pane " id="interesados">'
+				html+='<table class="table table-condensed table-striped">'
+				$.each(obj.interesados, function(){
+					html+='<tr>'
+					html+='<td>'+this.RBD+'</td>'
+					html+='<td>'+this.NOMBRE+'</td>'
+					html+='<td>'+this.ALUMNOS_SEP+'</td>'
+					html+='</tr>'
+				})
+				html+='</div>'
+
+				html+='<div class="tab-pane " id="cierre">'
+				html+='<table class="table table-condensed table-striped">'
+				$.each(obj.cierre, function(){
+					html+='<tr>'
+					html+='<td>'+this.RBD+'</td>'
+					html+='<td>'+this.NOMBRE+'</td>'
+					html+='<td>'+this.ALUMNOS_SEP+'</td>'
+					html+='</tr>'
+				})
+				html+='</div>'
+
+		html+='</div>'
+
+		return html
+
 }
 
 function tmp_grupo_terreno(obj, cargo){

@@ -100,8 +100,8 @@ class Gestion extends CI_Controller {
 			break;
 			case 5:
 				$r = $this->mod_gestion->volcar_colegios($_POST);
-				//echo json_encode($r);
-				print_r($_POST);
+				echo json_encode($r);
+				//print_r($_POST);
 			break;
 		}
 	}
