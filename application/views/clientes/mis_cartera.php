@@ -1,5 +1,5 @@
 <div id="cartera">
-<table class="table table-bordered table-condensed table-striped table-hover">
+<table class="cartera table table-bordered table-condensed table-striped table-hover">
 <?php foreach($datos as $d): ?>
 	<?php $col = $d['datos_colegio'][0]; ?>
 <tr>
@@ -18,7 +18,7 @@
 	<td><?= $ges['gestion'];  ?></td>
 	<td><?= $ges['NOM_EJECUTIVO'];  ?></td>
 	<td>
-		
+
 	</td>
 </tr>
 <?php endforeach; ?>

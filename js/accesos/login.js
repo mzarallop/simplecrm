@@ -21,9 +21,9 @@ function login() {
                 var p = parseInt(resultado.IDPERFIL)
                 if(p === 2)
                 {
-                    window.location.href = server + 'clientes/'
-                }else{
-                    window.location.href = server + 'clientes/'
+                    window.location.href = server + 'clientes/index/1'
+                }else if(p === 1){
+                    window.location.href = server + 'gestion/resumen_gestion/'
                 }
 
             } else {

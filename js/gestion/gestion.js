@@ -121,6 +121,11 @@ function tmp_reporte_gestion(obj, datos){
 }
 
 function tmp_grupo_call(obj, cargo, datos){
+
+	var entrevista = new Array
+	var presenta = new Array
+	var interesado = new Array
+	var cierre = new Array
 	var html = '<table class="table table-condensed table-bordered table-striped" style="font-size:11px">'
 		html+='<thead><tr>'
 		html+='<th>Ejecutivo</th>'
@@ -133,12 +138,10 @@ function tmp_grupo_call(obj, cargo, datos){
 		html+='<th style="text-align:center">Interesado</th>'
 		html+='<th style="text-align:center">Cierre</th>'
 		html+='</tr></thead><tbody>'
-		var entrevista = new Array
-		var presentacion = new Array
-		var interesado = new Array
-		var cierre = new Array
+
+
 		$.each(obj,function() {
-			var buscar_llamadas = {path:'http://186.67.137.90:8080/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+			var buscar_llamadas = {path:central+'/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
             var procesar = capsula_llamada(buscar_llamadas)
             var data = JSON.parse(procesar.fuente)
 			html+='<tr>'
@@ -153,16 +156,16 @@ function tmp_grupo_call(obj, cargo, datos){
 					$.each(this.detalle, function(){
 						switch(tipo){
 							case "Entrevista":
-								entrevista.push(this.rbd)
+								entrevista.push(this.rbd);
 							break;
 							case "Presentación":
-								presentacion.push(this.rbd)
+								presenta.push(this.rbd);
 							break;
-							case "Prospecto Interesado":
-								interesado.push(this.rbd)
+							case "Interesado":
+								interesado.push(this.rbd);
 							break;
 							case "Cierre":
-								cierre.push(this.rbd)
+								cierre.push(this.rbd);
 							break;
 						}
 					})
@@ -175,7 +178,7 @@ function tmp_grupo_call(obj, cargo, datos){
 
 	var data_colegios = {
 			entrevista:entrevista,
-			presentacion:presentacion,
+			presentacion:presenta,
 			interesado:interesado,
 			cierre:cierre,
 			path:'gestion/ajax/',
@@ -184,22 +187,23 @@ function tmp_grupo_call(obj, cargo, datos){
 
 	var procesar = capsula(data_colegios)
 	var data = JSON.parse(procesar.fuente)
-	var html_colegios = tmp_colegios_html(data)
+	var html_colegios = tmp_colegios_html(data, 'call')
 
 	html+=html_colegios
-
+	pintar_funel('resumen_ventas', data)
 	return html
 }
 
-function tmp_colegios_html(obj){
+function tmp_colegios_html(obj, id){
+
 	var html = ''
-		html+='<ul id="myTab" class="nav nav-tabs">'
+		html+='<ul id="'+id+'" class="nav nav-tabs">'
 		html+='<li class="active"><a href="#entrevista" data-toggle="tab">Entrevista ('+obj.entrevista.length+')</a></li>'
 		html+='<li><a href="#presentacion" data-toggle="tab">Presentación ('+obj.presentacion.length+')</a></li>'
-		html+='<li><a href="#interesados" data-toggle="tab">Interesados ('+obj.interesados.length+')</a></li>'
+		html+='<li><a href="#interesados" data-toggle="tab">Interesados ('+obj.interesado.length+')</a></li>'
 		html+='<li><a href="#cierre" data-toggle="tab">Cierre ('+obj.cierre.length+')</a></li>'
 		html+='</ul>'
-		html+='<div id="myTabContent" class="tab-content">'
+		html+='<div id="'+id+'Content" class="tab-content">'
 
 				html+='<div class="tab-pane active" id="entrevista">'
 				html+='<table class="table table-condensed table-striped"  style="font-size:11px">'
@@ -262,7 +266,7 @@ function tmp_colegios_html(obj){
 					html+='<td>COMUNA</td>'
 					html+='<td>TELEFONO</td>'
 					html+='</tr>'
-				$.each(obj.interesados, function(){
+				$.each(obj.interesado, function(){
 					html+='<tr>'
 					html+='<td>'+this.RBD+'</td>'
 					html+='<td>'+this.NOMBRE+'</td>'
@@ -308,7 +312,10 @@ function tmp_colegios_html(obj){
 }
 
 function tmp_grupo_terreno(obj, cargo){
-
+	var entrevista = new Array
+	var presentacion = new Array
+	var interesado = new Array
+	var cierre = new Array
 	var html = '<table class="table table-condensed table-bordered table-striped" style="font-size:11px">'
 		html+='<thead><tr>'
 		html+='<th>Ejecutivo</th>'
@@ -327,11 +334,90 @@ function tmp_grupo_terreno(obj, cargo){
 				html+='<td>'+this.vendedor.asignacion+'</td>'
 				$.each(this.acciones, function(){
 					html+='<td style="text-align:center" title="'+this.tipo.descripcion+'">'+this.detalle.length+'</td>'
+					var tipo = this.tipo.descripcion
+
+					$.each(this.detalle, function(){
+						switch(tipo){
+							case "Entrevista":
+								entrevista.push(this.rbd)
+							break;
+							case "Presentación":
+								presentacion.push(this.rbd)
+							break;
+							case "Prospecto Interesado":
+								interesado.push(this.rbd)
+							break;
+							case "Cierre":
+								cierre.push(this.rbd)
+							break;
+						}
+					})
 				})
 			html+='</tr>'
 		});
 	html+='</tbody></table>'
+	var data_colegios = {
+			entrevista:entrevista,
+			presentacion:presentacion,
+			interesado:interesado,
+			cierre:cierre,
+			path:'gestion/ajax/',
+			case:5
+	}
+
+	var procesar = capsula(data_colegios)
+	var data = JSON.parse(procesar.fuente)
+	var html_colegios = tmp_colegios_html(data, 'terreno')
+
+	html+=html_colegios
 	return html
+
+}
+
+function pintar_funel(id, datos){
+
+var vector = [
+                ['Entrevista',   parseInt(datos.entrevista.length)],
+                ['Presentación', parseInt(datos.presentacion.length)],
+                ['Interesado', parseInt(datos.interesado.length)],
+                ['Cierre',    parseInt(datos.cierre.length)]
+            ]
+    console.log(vector)
+
+    $('#'+id).highcharts({
+        chart: {
+            type: 'funnel',
+            marginRight: 100
+        },
+        title: {
+            text: 'Sales funnel',
+            x: -50
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                    softConnector: true
+                },
+                neckWidth: '30%',
+                neckHeight: '25%'
+
+                //-- Other available options
+                // height: pixels or percent
+                // width: pixels or percent
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: 'Unique users',
+            data: vector
+        }]
+    });
+
 }
 
 function tmp_grupo_cautivo(obj, cargo, datos){
@@ -382,7 +468,7 @@ function tmp_grupo_masterclass(obj, cargo, datos){
 		html+='<th style="text-align:center">Renovación</th>'
 		html+='</tr></thead><tbody>'
 		$.each(obj,function() {
-			var buscar_llamadas = {path:'http://186.67.137.90:8080/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
+			var buscar_llamadas = {path:central+'/api/', inicio:datos.inicio, termino:datos.termino, anexo:this.vendedor.anexo}
             var procesar = capsula_llamada(buscar_llamadas)
             var data = JSON.parse(procesar.fuente)
 			html+='<tr>'
@@ -482,3 +568,31 @@ function agregar_usuario(){
 			}
 		})
 }
+
+function generar_reporte(){
+	var tabla = $("table#resumen_ejecutivos").html()
+		tabla = encodeURI(tabla)
+		console.log('table', tabla)
+
+	$.download(server+'gestion/reporte/', 'tabla?'+tabla, 'post');
+
+}
+
+jQuery.download = function(url, data, method) {
+    //url and data options required
+    if (url && data) {
+        //data can be string of parameters or array/object
+        data = typeof data == 'string' ? data : jQuery.param(data);
+        //split params into form inputs
+        var inputs = '';
+        jQuery.each(data.split('&'), function() {
+            var pair = this.split('?');
+            inputs += '<input type="hidden" name="' + pair[0] +
+                '" value="' + pair[1] + '" />';
+        });
+        //send request
+        jQuery('<form action="' + url +
+                '" method="' + (method || 'post') + '" target="_new">' + inputs + '</form>')
+            .appendTo('body').submit();
+    };
+};

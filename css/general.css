@@ -1,17 +1,64 @@
+ul.vendedores_ficha{
+	margin: 0;padding: 0;list-style: none;
+
+}
+ul.vendedores_ficha li {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 12px;
+    padding: 5px;
+    text-align: center;
+    background-color: beige;
+}
+li.log_map {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    text-align: center;
+    background-color: rgba(128, 128, 128, 0.05);
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+li.dos_columnas {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+    text-align: center;
+    background-color: rgba(128, 128, 128, 0.05);
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+div#total_colegios {
+    margin-top: -37px;
+    position: relative;
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    background-color: red;
+    padding: 10px;
+    display: -webkit-inline-box;
+    z-index: 3000;
+    color: white;
+    text-shadow: 1px 1px 3px black;
+}
 .space_footer{
 	height: 50px;
 }
 .footer{
-width:100%; 
-padding-top:11px; 
-height:30px; 
-background:rgb(245, 245, 245); 
-position:fixed; 
-bottom:0; 
-text-align:center; 
+width:100%;
+padding-top:11px;
+height:30px;
+background:rgb(245, 245, 245);
+position:fixed;
+bottom:0;
+text-align:center;
 margin:0 auto;
 text-align:middle;
-color:rgb(0, 20, 245); 
+color:rgb(0, 20, 245);
 border-top: 2px solid darkorange;
 }
 .footer>.notificacion

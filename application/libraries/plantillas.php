@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 class plantillas{
 
 	function __construct(){
 		$this->ci = get_instance();
-		
+
 	}
 
 	function tipo_pago($id){
@@ -106,7 +106,7 @@ class plantillas{
 
 			$div.='</table><br>';
 			//CONDICIONES
-			
+
 		return $div;
 	}
 
@@ -120,5 +120,57 @@ class plantillas{
 			<div style="font-size:12px;"><b>'.$obj['col']['ejecutivo'].'</b><br>Asesor(a) de proyectos<br>Kdoce Soluciones Educativas.<br><a href="http://www.kdoce.cl">www.kdoce.cl</a></div></div></div>';
 			return $div;
 	}
-} 
+
+	function tmp_reporte_vendedor($obj){
+		$div='<h3>Cotizaciones</h3>';
+		foreach($obj['detalle']['cotizaciones'] as $cot){
+			if(count($cot['result'])>0){
+				$div.= '<h4>Semana '.$cot['semana'].'</h4>';
+				$div.='<table width="100%" style="font-size:11px; border:1px solid gray;">';
+				$div.='<thead><tr>';
+					$div.='<th width="5%">Id</th>';
+					$div.='<th width="50%">Colegio</th>';
+					$div.='<th width="25%">Dependencia</th>';
+					$div.='<th width="20%">Monto</th>';
+				$div.='</tr></thead><tbody>';
+				foreach($cot['result'] as $r){
+					$div.='<tr>';
+					$div.='<td width="5%" style="border-bottom:1px solid gray;border-right:1px solid gray">'.$r['id'].'</td>';
+					$div.='<td width="50%" style="border-bottom:1px solid gray;border-right:1px solid gray">'.$r['colegio'].'</td>';
+					$div.='<td width="25%" style="border-bottom:1px solid gray;border-right:1px solid gray">'.$r['dependencia'].'</td>';
+					$div.='<td width="20%" style="text-align:right" style="border-bottom:1px solid gray;border-right:1px solid gray">$ '.number_format($r['total'], 0, ',','.').'</td>';
+				$div.='</tr>';
+				}
+				$div.='</tbody></table>';
+			}
+		}
+		$div.='<h3>Gestiones</h3>';
+		foreach($obj['detalle']['gestiones'] as $ges){
+			if(count($ges['result'])>0){
+				$div.='<h4>Semana '.$ges['semana'].'</h4>';
+
+				$div.='<table width="100%" style="font-size:11px;border:1px solid gray;">';
+				$div.='<thead><tr>';
+					$div.='<th width="20%" style="border-bottom:1px solid gray;border-right:1px solid gray">Fecha</th>';
+					$div.='<th width="20%" style="border-bottom:1px solid gray;border-right:1px solid gray">Descripcion</th>';
+					$div.='<th width="50%" style="border-bottom:1px solid gray;border-right:1px solid gray">Colegio</th>';
+					$div.='<th width="10%" style="border-bottom:1px solid gray;border-right:1px solid gray">SEP</th>';
+					//$div.='<th>Observaciones</th>';
+				$div.='</tr></thead><tbody>';
+				foreach($ges['result'] as $g){
+					$div.='<tr>';
+					$div.='<td width="20%" style="border-bottom:1px solid gray;border-right:1px solid gray">'.$g['fecha'].'</td>';
+					$div.='<td width="20%" style="border-bottom:1px solid gray;border-right:1px solid gray">'.$g['descripcion'].'</td>';
+					$div.='<td width="50%" style="border-bottom:1px solid gray;border-right:1px solid gray">'.$g['nombre'].'</td>';
+					$div.='<td width="10%" style="border-bottom:1px solid gray;border-right:1px solid gray">'.$g['alumnos_sep'].'</td>';
+					//$div.='<td>'.$g['observaciones'].'</td>';
+				$div.='</tr>';
+				}
+				$div.='</tbody></table>';
+			}
+		}
+
+		return $div;
+	}
+}
 ?>

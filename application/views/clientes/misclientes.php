@@ -1,69 +1,125 @@
 <div class="row-fluid">
-	<div class="span2">
-		<ul>
-			<li><a href="<?= base_url() ?>clientes/">Mi Cartera</a></li>
-			<li><a href="javascript:;" onclick="mis_pendientes()">Mis Tareas</a></li>
-			<li><a href="javascript:;" onclick="mis_cotizaciones()">Mis Cotizaciones</a></li>
-			<li><a href="javascript:;" onclick="traer_cartera_gestion()">Resumen de gestiónes</a></li>
-		</ul>
-
-	</div>
-	<div class="span10">
+	<div class="span12">
 	<input type="hidden" id="id_usuario" value="<?= $usuario[0]['ID'] ?>">
 				<div id="mispendientes" class="capas"></div>
 				<div id="buscador" class="capas"></div>
 				<div id="cotizaciones" class="capas"></div>
 				<div id="reportegestion" class="capas"></div>
 		   	    <div id="lista_prospectos" class="capas">
-	      	    <table class="display compact" id="cartera" style="font-size:10px">
-	      	    <thead>
-	      	    <tr>
-	      	    	<th></th>
-	      	    	<th>Rbd</th>
-	      	    	<th>Colegio</th>
-	      	    	<th>Region</th>
-	      	    	<th>Comuna</th>
-	      	    	<th>SEP</th>
-	      	    	<th>Dependencia</th>
-	      	    	<th>Fecha gestión</th>
-	      	    	<th>Última gestión</th>
-	      	    	<th data-orderable="false">Acciones</th>
 
-	   	      	    </tr>
-	      	    </thead>
-	      	    <tbody>
-	      	    	<?php $cont =1; foreach($mi_cartera as $mc): ?>
-	      	    	<tr id="<?= $mc['colegio']['RBD'] ?>" class="prospecto" data-rbd="<?= $mc['colegio']['RBD'] ?>">
-	      	    		<?php $color = $this->usuarios->segmentos($mc['colegio']['SEGMENTO']); ?>
-	      	    		<td style="border-left: 6px solid <?= $color; ?>;"><span class="segmento"><?= $mc['colegio']['SEGMENTO'] ?></span></td>
-	      	    		<td><?= $mc['colegio']['RBD'] ?></td>
-	      	    		<td><?= $mc['colegio']['NOMBRE'] ?></td>
-	      	    		<td><?= $mc['colegio']['REGION'] ?></td>
-	      	    		<td><?= $mc['colegio']['COMUNA'] ?></td>
-	      	    		<td><?= $mc['colegio']['ALUMNOS_SEP'] ?></td>
-	      	    		<?php //$monto_sep = ($mc['colegio']['ALUMNOS_SEP']*35000*12); ?>
-	      	    		<td><?= $mc['colegio']['DEPENDENCIA']?></td>
-	      	    		<td><time datetime="<?= $mc['colegio']['fecha_gestion'] ?>" class="age"><?= $mc['colegio']['fecha_gestion'] ?></time></td>
-	      	    		<td>
-	      	    			<span class="<?= $mc['colegio']['label'] ?>"><?= $mc['colegio']['gestion'] ?></span>
-	      	    		</td>
-	      	    		<td>
-	      	    			<button class="btn btn-mini btn-info" onclick="ficha(<?= $mc['colegio']['RBD'] ?>)" title="Ver Ficha">
-	      	    				<i class="icon-search icon-white"></i>
-	      	    			</button>
-	      	    			<button class="btn btn-mini btn-success" onclick="agregar_gestion(<?= $mc['colegio']['RBD'] ?>)" title="Agregar gestión">
-	      	    				<i class="icon-plus icon-white"></i>
-	      	    			</button>
-	      	    			<button class="btn btn-mini" onclick="agregar_usuario(<?= $mc['colegio']['RBD'] ?>)" title="Agregar contacto">
-	      	    				<i class="icon-user"></i>
-	      	    			</button>
+				<ul id="myTab" class="nav nav-tabs">
+	              <li class="active"><a href="#psu" data-toggle="tab">Particular Subvencionado (<?= count($mi_cartera) ?>)</a></li>
+	              <li><a href="#mun" data-toggle="tab">Municipales (<?= count($mi_cartera_mu) ?>)</a></li>
+	            </ul>
+	            <div id="myTabContent" class="tab-content">
+			      	<div class="tab-pane active in" id="psu">
+			      	    <table class="display compact cartera" id="cartera" style="font-size:10px">
+			      	    <thead>
+			      	    <tr>
+			      	    	<th></th>
+			      	    	<th>Rbd</th>
+			      	    	<th>Colegio</th>
 
-	      	    		</td>
+			      	    	<th>Comuna</th>
+			      	    	<th>SEP</th>
 
-	      	    	</tr>
- 	      	    	<?php $cont++; endforeach; ?>
-	      	    </tbody>
-	      	    </table>
+			      	    	<th>Fecha gestión</th>
+			      	    	<th>Última gestión</th>
+			      	    	<th data-orderable="false">Acciones</th>
+
+			   	      	    </tr>
+			      	    </thead>
+			      	    <tbody>
+			      	    	<?php $cont =1; foreach($mi_cartera as $mc): ?>
+			      	    	<tr id="<?= $mc['colegio']['RBD'] ?>" class="prospecto" data-rbd="<?= $mc['colegio']['RBD'] ?>">
+			      	    		<?php $color = $this->usuarios->segmentos($mc['colegio']['SEGMENTO']); ?>
+			      	    		<td style="border-left: 6px solid <?= $color; ?>;"><span class="segmento"><?= $mc['colegio']['SEGMENTO'] ?></span></td>
+			      	    		<td><?= $mc['colegio']['RBD'] ?></td>
+			      	    		<td><?= $mc['colegio']['NOMBRE'] ?></td>
+
+			      	    		<td><?= $mc['colegio']['COMUNA'] ?></td>
+			      	    		<td><?= $mc['colegio']['ALUMNOS_SEP'] ?></td>
+			      	    		<?php //$monto_sep = ($mc['colegio']['ALUMNOS_SEP']*35000*12); ?>
+
+			      	    		<td><time datetime="<?= $mc['colegio']['fecha_gestion'] ?>" class="age"><?= $mc['colegio']['fecha_gestion'] ?></time></td>
+			      	    		<td>
+			      	    			<span class="<?= $mc['colegio']['label'] ?>"><?= $mc['colegio']['gestion'] ?></span>
+			      	    		</td>
+			      	    		<td>
+			      	    			<button class="btn btn-mini btn-info" onclick="ficha(<?= $mc['colegio']['RBD'] ?>)" title="Ver Ficha">
+			      	    				<i class="icon-search icon-white"></i>
+			      	    			</button>
+			      	    			<button class="btn btn-mini btn-success" onclick="agregar_gestion(<?= $mc['colegio']['RBD'] ?>)" title="Agregar gestión">
+			      	    				<i class="icon-plus icon-white"></i>
+			      	    			</button>
+			      	    			<button class="btn btn-mini" onclick="agregar_usuario(<?= $mc['colegio']['RBD'] ?>)" title="Agregar contacto">
+			      	    				<i class="icon-user"></i>
+			      	    			</button>
+
+			      	    		</td>
+
+			      	    	</tr>
+		 	      	    	<?php $cont++; endforeach; ?>
+			      	    </tbody>
+			      	    </table>
+			      	</div><!-- FIN CONTENT PSU-->
+			      	<div class="tab-pane in" id="mun">
+			      		<table class="display compact cartera" id="cartera" style="font-size:10px">
+			      	    <thead>
+			      	    <tr>
+			      	    	<th></th>
+			      	    	<th>Rbd</th>
+			      	    	<th>Colegio</th>
+
+			      	    	<th>Comuna</th>
+			      	    	<th>SEP</th>
+
+			      	    	<th>Fecha gestión</th>
+			      	    	<th>Última gestión</th>
+			      	    	<th data-orderable="false">Acciones</th>
+
+			   	      	    </tr>
+			      	    </thead>
+			      	    <tbody>
+			      	    	<?php $cont =1; foreach($mi_cartera_mu as $mu): ?>
+			      	    	<tr id="<?= $mu['colegio']['RBD'] ?>" class="prospecto" data-rbd="<?= $mu['colegio']['RBD'] ?>">
+			      	    		<?php $color = $this->usuarios->segmentos($mu['colegio']['SEGMENTO']); ?>
+			      	    		<td style="border-left: 6px solid <?= $color; ?>;"><span class="segmento"><?= $mu['colegio']['SEGMENTO'] ?></span></td>
+			      	    		<td><?= $mu['colegio']['RBD'] ?></td>
+			      	    		<td><?= $mu['colegio']['NOMBRE'] ?></td>
+
+			      	    		<td><?= $mu['colegio']['COMUNA'] ?></td>
+			      	    		<td><?= $mu['colegio']['ALUMNOS_SEP'] ?></td>
+			      	    		<?php //$monto_sep = ($mu['colegio']['ALUMNOS_SEP']*35000*12); ?>
+
+			      	    		<td><time datetime="<?= $mu['colegio']['fecha_gestion'] ?>" class="age"><?= $mu['colegio']['fecha_gestion'] ?></time></td>
+			      	    		<td>
+			      	    			<span class="<?= $mu['colegio']['label'] ?>"><?= $mu['colegio']['gestion'] ?></span>
+			      	    		</td>
+			      	    		<td>
+			      	    			<button class="btn btn-mini btn-info" onclick="ficha(<?= $mu['colegio']['RBD'] ?>)" title="Ver Ficha">
+			      	    				<i class="icon-search icon-white"></i>
+			      	    			</button>
+			      	    			<button class="btn btn-mini btn-success" onclick="agregar_gestion(<?= $mu['colegio']['RBD'] ?>)" title="Agregar gestión">
+			      	    				<i class="icon-plus icon-white"></i>
+			      	    			</button>
+			      	    			<button class="btn btn-mini" onclick="agregar_usuario(<?= $mu['colegio']['RBD'] ?>)" title="Agregar contacto">
+			      	    				<i class="icon-user"></i>
+			      	    			</button>
+
+			      	    		</td>
+
+			      	    	</tr>
+		 	      	    	<?php $cont++; endforeach; ?>
+			      	    </tbody>
+			      	    </table>
+			      	</div>
+			      	<div class="tab-pane in" id="sge"></div>
+
+	      	    </div>
+	      	    <!--FIN CONTENT-->
+
+
 	      	    </div>
 
 	      	    <div id="ficha_cliente" style="display:none" class="capas">
@@ -110,3 +166,4 @@
 	    </div>
 	</div>
 </div>
+<div id="map" class="map" style="width: 100%;height: 600px;"></div>

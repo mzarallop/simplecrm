@@ -1,50 +1,13 @@
 $(function(){
 
-    $(".age").age()
-     $('#cartera').DataTable({
-        "scrollY":        "450px",
-        "scrollCollapse": false,
-        "paging":         false
-    } );
+    $(".age").age();
+    $('.cartera').DataTable();
 
   //  detectBrowser()
 })
 
-function initialize(obj) {
-  var mapOptions = {
-    center: new google.maps.LatLng(obj.lat, obj.lng),
-    zoom: 14,
-     mapTypeControl: true,
-    mapTypeControlOptions: {
-      style: google.maps.MapTypeControlStyle.DEFAULT,
-      mapTypeIds: [
-        google.maps.MapTypeId.ROADMAP,
-        google.maps.MapTypeId.TERRAIN
-      ]
-    },
-    zoomControl: true,
-    zoomControlOptions: {
-      style: google.maps.ZoomControlStyle.SMALL
-    }
-  };
+function initMap(){
 
-  var map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-
-  var marker = new google.maps.Marker({
-    map: map,
-    title:obj.NOMBRE,
-    position: map.getCenter()
-  });
-  
-  var infowindow = new google.maps.InfoWindow({
-      content: obj.html
-  });
-  
-  infowindow.open(map, marker);
-  google.maps.event.addListener(marker, 'click', function() {
-      infowindow.open(map, marker);
-  });
 }
 
 /*
@@ -96,14 +59,14 @@ function ficha(rbd){
 	$("#productos_detalle").html(ficha_productos)
 	$("#ficha_cliente").fadeIn('fast')
 	$("#productos_facturados").DataTable();
-	
+
 	$('#total_productos').text(total_productos).addClass('label label-info')
 	$('#total_gestiones').text(total_gestiones).addClass('label label-info')
 	$('#total_cotizaciones').text(total_cotizaciones).addClass('label label-info')
 	$('#total_contactos').text(total_contactos).addClass('label label-info')
-	
+
 	$(".age").age()
-	
+
 	var colegio = data[0].resumen
 	//var obj = {lat:colegio.LATITUD, lng:colegio.LONGITUD,html:'Teléfono:'+colegio.TELEFONO}
 	//google.maps.event.addDomListener(window, 'load', initialize(obj));
@@ -275,7 +238,7 @@ function agregar_gestion(rbd){
 					html+='<option value="'+this.id+'" selected>'+this.descripcion+'</option>'
 				}else{
 					html+='<option value="'+this.id+'">'+this.descripcion+'</option>'
-					
+
 				}
 			})
 			html+='</select>'
@@ -346,7 +309,7 @@ function agregar_gestion(rbd){
 			console.log(datos_gestion)
 			var crear = capsula(datos_gestion)
 			var resultado = JSON.parse(crear.fuente)
-			
+
 			if(parseInt(resultado)>0){
 				ficha(rbd)
 			}else{
@@ -375,7 +338,7 @@ function agregar_usuario(rbd){
 		html+='<td><input type="text" id="telefono" /></td>'
 		html+='</tr>'
 		html+='</table>'
-	
+
 	bootbox.confirm(html, function(resp){
 		if(resp){
 			var datos = {
@@ -479,7 +442,7 @@ function tmp_tipo_gestiones(obj){
 	var html = '<ul class="estados_cartera">'
 		$.each(obj, function(){
 			html+='<li>'
-			
+
 			var color_id = parseInt(this.gestion.id)
 			switch(color_id){
 						case 1: var color = 'grey';	break;
@@ -514,7 +477,7 @@ function mis_cotizaciones(){
 	$('.capas').hide()
 	$('#cotizaciones').html(html_cotizacion)
 	$('.age').age()
-	
+
 	$('#cotizaciones').fadeIn()
 	$('#miscotizaciones').DataTable()
 }
@@ -593,7 +556,7 @@ function reporte_seguimiento_ventas(){
 	var procesar = capsula(datos)
 	var data = JSON.parse(procesar.fuente)
 	var gestiones = tmp_gestiones(data)
-	
+
 	$("#reporte_general").html(gestiones)
 
 }
@@ -627,7 +590,7 @@ function tmp_gestiones(obj){
 			html+='<td></td>'
 			html+='</tr>'
 		})
-		
+
 		html+='<tbody></table>'
 	return html
 }

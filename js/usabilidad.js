@@ -1,4 +1,5 @@
 var server = 'http://' + window.location.host + '/crmkdoce/'
+var central = 'http://192.168.60.100'
 
 $(function() {
     if (window.location.hash != "") {
@@ -9,8 +10,9 @@ $(function() {
 
 function capsula(obj) {
 
-    var procesar = 
+    var procesar =
     $.ajax({
+
         url: server + obj.path,
         type: 'post',
         dataType: 'json',
@@ -25,7 +27,7 @@ function capsula(obj) {
 
     return resultado
 
-} 
+}
 
 
 function moneda(cash){

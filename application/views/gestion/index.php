@@ -17,7 +17,10 @@
 		<li><a href="javascript:reporte_gestion()">Resumen de Gestión</a></li>
 		<li><a href="javascript:resumen_gestion()">Detalle de Gestión</a></li>
 		<li><a href="javascript:reporte_llamadas()">Reporte llamadas</a></li>
-		</ul>
+	</ul>
+	<div id="resumen_ventas">
+
+	</div>
 </div>
 <div class="span8">
 	<div id="reporte_gestion" class="capa"></div>

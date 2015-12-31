@@ -11,9 +11,7 @@ class mod_gestion extends CI_Model{
 		foreach($perfiles->result_array() as $perfil){
 
 			array_push($datos, array("perfil"=>$perfil, "asesores"=>$this->traer_asesores($perfil, $obj)));
-
 		}
-
 		return $datos;
 	}
 
@@ -136,21 +134,56 @@ class mod_gestion extends CI_Model{
 		$contador = 1;
 		foreach($usuario as $u){
 
+
+
 			if($carga == 1){
 
-				$sql="insert into core_clientes_asignaciones (idusuario, idcliente, idrbd, idasignador)
-					  select '".$u['ID']."', rbd, rbd, '168' from asignacion where vendedor = '".$u['LOGIN']."'";
 
-				$this->db->query($sql);
+
+					$rbds = $this->db->where('vendedor', $u['LOGIN'])->select('rbd')->from('asignacion')->get();
+					$row_rbds = $rbds->result_array();
+					$rbd = array();
+					foreach($row_rbds as $rb){
+						array_push($rbd, $rb['rbd']);
+					}
+
+					$this->db->where_in('idrbd', $rbd);
+					$del = $this->db->delete('core_clientes_asignaciones');
+
+
+				if($del){
+
+					$sql="insert into core_clientes_asignaciones (idusuario, idcliente, idrbd, idasignador)
+						select '".$u['ID']."', rbd, rbd, '168' from asignacion
+						where vendedor = '".$u['LOGIN']."'";
+
+					$this->db->query($sql);
+
+				}
 
 			}elseif($carga == 0){
 
-				$this->db->where('idusuario', $u['ID']);
-				$this->db->delete('core_clientes_asignaciones');
 
-				$sql2="insert into core_clientes_asignaciones (idusuario, idcliente, idrbd, idasignador)
-				  select '".$u['ID']."', rbd, rbd, '168' from asignacion  where vendedor = '".$u['LOGIN']."'";
-			 	$this->db->query($sql2);
+					$rbds = $this->db->where('vendedor', $u['LOGIN'])->select('rbd')->from('asignacion')->get();
+					$row_rbds = $rbds->result_array();
+					$rbd = array();
+					foreach($row_rbds as $rb){
+						array_push($rbd, $rb['rbd']);
+					}
+
+					$this->db->where_in('idrbd', $rbd);
+					$del = $this->db->delete('core_clientes_asignaciones');
+
+
+				if($del){
+					$this->db->where('idusuario', $u['ID']);
+					$this->db->delete('core_clientes_asignaciones');
+
+					$sql2="insert into core_clientes_asignaciones (idusuario, idcliente, idrbd, idasignador)
+					  select '".$u['ID']."', rbd, rbd, '168' from asignacion
+					  where vendedor = '".$u['LOGIN']."'";
+				 	$this->db->query($sql2);
+				 }
 			}
 
 			$contador++;
@@ -212,17 +245,62 @@ class mod_gestion extends CI_Model{
 			$datos["cierre"] = array();
 		}
 		//interesados
-		if(isset($obj['interesados']) && count($obj['interesados'])>0){
-		$intenresados = $obj['interesados'];
+		if(isset($obj['interesado']) && count($obj['interesado'])>0){
+		$interesados = $obj['interesado'];
 		$this->db->select('RBD, NOMBRE, ALUMNOS_SEP, TELEFONO, DEPENDENCIA, COMUNA, CLASIFICACION, MATRICULA');
 		$this->db->where_in('RBD', $interesados);
 		$this->db->group_by('RBD');
 		$inte = $this->db->get('core_clientes_sep');
-			$datos["interesados"] = $inte->result_array();
+			$datos["interesado"] = $inte->result_array();
 		}else{
-			$datos["interesados"] = array();
+			$datos["interesado"] = array();
 		}
 		return $datos;
+	}
+
+	function reporte_gestiones($obj){
+		$data = array();
+			$query = $this->db->query('call sp_reporte_gestion(2)');
+			$row = $query->result_array();
+			$query->next_result();
+		foreach($row as $r){
+			array_push($data, array("resumen"=>$r, "detalle"=>$this->detalle_resultados_($r)));
+		}
+		return $data;
+	}
+
+
+	function reporte_gestionesb(){
+			$query = $this->db->query('call sp_reporte_llamar(2, "Particular Subvencionado")');
+			return $query->result_array();
+	}
+
+	function detalle_resultados_($obj){
+
+		$semana = explode(",",$obj['idsemana']);
+		$data_gestion = array();
+		$data_cotizacion = array();
+
+		foreach($semana as $sem){
+
+			$this->db->where('DATE_FORMAT(fecha, "%u")=', $sem);
+			$this->db->where('idvendedor', $obj['idv']);
+			$this->db->order_by('fecha DESC');
+			$query2 = $this->db->get('cotizacion_general');
+			array_push($data_cotizacion, array("semana"=>$sem, "result"=>$query2->result_array()));
+			$query2->next_result();
+			$this->db->where('idsemana', $sem);
+			$this->db->where('idvendedor', $obj['idv']);
+			$this->db->where('descripcion !="volver a llamar"');
+			$this->db->order_by('fecha DESC');
+			$query = $this->db->get('vista_resumen_gestiones');
+			array_push($data_gestion, array("semana"=>$sem, "result"=>$query->result_array()));
+			$query->next_result();
+
+		}
+
+		return array("gestiones"=>$data_gestion, "cotizaciones"=>$data_cotizacion);
+
 	}
 
 } ?>

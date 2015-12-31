@@ -5,13 +5,27 @@ class Clientes extends CI_Controller {
 	public function index()
 	{
 		$this->usuarios->verificar_login();
+		$idcartera = $this->uri->segment(3);
 		$this->load->model('mod_crm');
 		$datos['usuario'] = $this->usuarios->datos_usuarios();
 		$datos['css'] = array("clientes/clientes.css", "jquery.dataTables.css");
-		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js", 
+		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js",
 							"jquery.dataTables.js", "highcharts.js", "exporting.js", "funnel.js");
-		$datos['title'] = 'Mis Asignaciones';
-		@$datos['mi_cartera'] = $this->mod_crm->mi_cartera();
+
+		if($idcartera>0){
+			$datos['title'] = 'Cartera Gestionada';
+		}else{
+			$datos['title'] = 'Cartera sin Gestión';
+		}
+
+		@$datos['mi_cartera'] = $this->mod_crm->mi_cartera(array(
+			"tipo_colegio"=>'Particular Subvencionado',
+			"gestion"=>$idcartera)
+		);
+		@$datos['mi_cartera_mu'] = $this->mod_crm->mi_cartera(array(
+			"tipo_colegio"=>'Municipal',
+			"gestion"=>$idcartera)
+		);
 		$datos['menu'] = $this->lib_menu->menu_usuarios();
 
 		$this->load->view('fijos/head', $datos);
@@ -20,16 +34,34 @@ class Clientes extends CI_Controller {
 		$this->load->view('fijos/footer');
 	}
 
+	function cobertura(){
+
+		$this->usuarios->verificar_login();
+		$this->load->model('mod_clientes');
+		$datos['usuario'] = $this->usuarios->datos_usuarios();
+		$datos['css'] = array("clientes/clientes.css", "jquery.dataTables.css");
+		$datos['js'] = array("clientes/crm.js","clientes/cobertura.js", "moneda.min.js", "jquery.age.js",
+							"jquery.dataTables.js", "highcharts.js", "exporting.js", "funnel.js");
+		$datos['title'] = 'Cobertura';
+		$datos['menu'] = $this->lib_menu->menu_usuarios();
+
+		$this->load->view('fijos/head', $datos);
+		$this->load->view('fijos/menu', $datos);
+		$this->load->view('clientes/cobertura', $datos);
+		$this->load->view('fijos/footer');
+
+	}
+
 	function marketing(){
 		$this->usuarios->verificar_login();
 		$this->load->model('mod_crm');
 		$datos['usuario'] = $this->usuarios->datos_usuarios();
 		$datos['css'] = array("clientes/clientes.css", "jquery.dataTables.css");
-		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js", 
+		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js",
 							"jquery.dataTables.js", "highcharts.js", "exporting.js", "funnel.js");
 		$datos['title'] = 'Mis Asignaciones';
 		$datos['menu'] = $this->lib_menu->menu_usuarios();
-		
+
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/marketing', $datos);
@@ -42,11 +74,11 @@ class Clientes extends CI_Controller {
 		$this->load->model('mod_crm');
 		$datos['usuario'] = $this->usuarios->datos_usuarios();
 		$datos['css'] = array("clientes/clientes.css", "jquery.dataTables.css");
-		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js", 
+		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js",
 							"jquery.dataTables.js", "highcharts.js", "exporting.js", "funnel.js");
 		$datos['title'] = 'Reporte de ventas';
 		$datos['menu'] = $this->lib_menu->menu_usuarios();
-		
+
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/reporteventas', $datos);
@@ -60,13 +92,13 @@ class Clientes extends CI_Controller {
 		$datos['css'] = array("clientes/clientes.css");
 			$datos['js'] = array("clientes/clientes.js");
 			$datos['title'] = 'Módulo de Gestiones';
-			$datos['mi_cartera'] = $this->Mod_clientes->mi_cartera();
+
 			$datos['facturas']  = $this->Mod_clientes->mostrar_facturas();
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
 			$datos['regiones'] = $this->selectores->clientes_region();
 
 
-			
+
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('fijos/menu', $datos);
 			$this->load->view('clientes/facturas', $datos);
@@ -86,32 +118,13 @@ class Clientes extends CI_Controller {
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
 			$datos['regiones'] = $this->selectores->clientes_region();
 
-			
+
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('fijos/menu', $datos);
 			$this->load->view('clientes/master', $datos);
 			$this->load->view('fijos/footer');
 	}
 
-	public function proyectos(){
-		$this->usuarios->verificar_login();
-		$this->load->model('Mod_clientes');
-		
-		$datos['usuario'] = $this->usuarios->datos_usuarios();
-		$datos['css'] = array("clientes/clientes.css");
-			$datos['js'] = array("clientes/master.js");
-			$datos['title'] = 'Módulo de Gestiones';
-			$datos['mi_cartera'] = $this->Mod_clientes->mi_cartera();
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
-			$datos['regiones'] = $this->selectores->clientes_region();
-
-			
-			$this->load->view('fijos/head', $datos);
-			$this->load->view('fijos/menu', $datos);
-			$this->load->view('clientes/proyectos', $datos);
-			$this->load->view('fijos/footer');
-
-	}
 
 	public function asignaciones()
 	{
@@ -123,7 +136,7 @@ class Clientes extends CI_Controller {
 			$datos['vendedores'] = $this->selectores->sel_vendedores();
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
 			$datos['regiones'] = $this->selectores->clientes_region();
-			
+
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('fijos/menu', $datos);
 			$this->load->view('clientes/index', $datos);
@@ -139,7 +152,7 @@ class Clientes extends CI_Controller {
 			$datos['title'] = 'Gestión de clientes';
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
 			$datos['regiones'] = $this->selectores->clientes_region();
-			
+
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('fijos/menu', $datos);
 			$this->load->view('clientes/index', $datos);
@@ -154,7 +167,7 @@ class Clientes extends CI_Controller {
 			$datos['js'] = array();
 			$datos['title'] = 'Ficha del Cliente';
 			$datos['menu'] = $this->lib_menu->menu_usuarios();
-			
+
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('clientes/ficha', $datos);
 			$this->load->view('fijos/footer');
@@ -167,7 +180,7 @@ class Clientes extends CI_Controller {
 		//$this->usuarios->verificar_login();
 		$this->load->model('Mod_clientes');
 		$this->load->model('mod_cotizaciones');
-		
+
 		$datos['productos'] = $this->mod_cotizaciones->categorias(0);
 		$datos['colegio'] = $this->mod_cotizaciones->datos_colegio($datos['rbd']);
 		$datos['usuario'] = $this->usuarios->datos_usuarios();
@@ -188,9 +201,9 @@ class Clientes extends CI_Controller {
 		//$this->usuarios->verificar_login();
 		$this->load->model('Mod_clientes');
 		$this->load->model('mod_cotizaciones');
-		
+
 		if(isset($datos['idcotizacion'])&&$datos['idcotizacion']>0){
-			$datos['cot'] = $this->mod_cotizaciones->traer_cotizacion(array("cotizacion"=>$datos['idcotizacion']));	
+			$datos['cot'] = $this->mod_cotizaciones->traer_cotizacion(array("cotizacion"=>$datos['idcotizacion']));
 		}
 
 		$datos['productos'] = $this->mod_cotizaciones->categorias(0);
@@ -241,7 +254,7 @@ class Clientes extends CI_Controller {
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/oportunidades', $datos);
 		$this->load->view('fijos/footer');
-		
+
 	}
 
 	function reporte_gestion(){
@@ -372,13 +385,13 @@ class Clientes extends CI_Controller {
                 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
         //relación utilizada para ajustar la conversión de los píxeles
                 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-                $pdf->setPrintHeader(false); //no imprime la cabecera ni la linea 
-				$pdf->setPrintFooter(true); //no imprime el pie ni la linea 
+                $pdf->setPrintHeader(false); //no imprime la cabecera ni la linea
+				$pdf->setPrintFooter(true); //no imprime el pie ni la linea
 
         // ---------------------------------------------------------
         // establecer el modo de fuente por defecto
                 $pdf->setFontSubsetting(true);
-        
+
        		//COTIZACION PDF
             $pdf->AddPage();
             $pdf->WriteHTML($html_cotizacion, true, 0, true, 0);
@@ -431,15 +444,13 @@ class Clientes extends CI_Controller {
 						$tabla.='<td>'.$cliente['CLASIFICACION'].'</td>';
 						$tabla.='<td>'.$this->mod_clientes->vendedor_asociado($cliente['RBD']).'</td>';
 						//$tabla.='<td>'.$cliente['EMAIL'].'</td>';
-						$tabla.='<td>
-							<a class="ver_colegio" href="javascript:;" onclick="ver_ficha_cliente(event)"><i class="glyphicon glyphicon-search" data-id="'.$cliente['RBD'].'" data-rbd="'.$cliente['RBD'].'"></i>Visualizar</a>
-							<a class="editar_colegio" href="javascript:;" onclick="editar_cliente(event)" ><i  data-id="'.$cliente['RBD'].'" data-rbd="'.$cliente['RBD'].'"></i> Editar</a>
-							<a class="eliminar_colegio" href="javascript:;"  onclick="eliminar_cliente(event)"><i class="icon-trash" data-id="'.$cliente['RBD'].'" data-rbd="'.$cliente['RBD'].'"></i> Eliminar</a></td></td>';
+						$tabla.='<td></td>';
 						$tabla.='</tr>';
 					}
 						$tabla.='</table>';
 					echo $tabla;
 			break;
+
 			case 3: //dependencia clientes
 
 				$com = $this->selectores->clientes_dependencia($_POST['id']);
@@ -785,6 +796,22 @@ class Clientes extends CI_Controller {
 			case 48:
 				$r = @$this->mod_cotizaciones->actualizar_cotizacion($_POST);
 				//$r = $_POST;
+				echo json_encode($r);
+			break;
+			case 49:
+				$r = @$this->mod_clientes->render_mapas($_POST);
+				echo json_encode($r);
+			break;
+			case 50:
+				$r = $this->mod_clientes->usuario_conectado();
+				echo json_encode($r);
+			break;
+			case 50:
+				$r = $this->mod_clientes->usuario_conectado();
+				echo json_encode($r);
+			break;
+			default:
+				$r = @$this->mod_clientes->render_mapas();
 				echo json_encode($r);
 			break;
 		}

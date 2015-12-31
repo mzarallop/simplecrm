@@ -8,14 +8,23 @@ class mod_crm extends CI_Model{
 	}
 
 
-	function mi_cartera(){
+	function mi_cartera($obj){
+		#from vista_resumen_gestiones where idvendedor = pr_idvendedor and descripcion is null ;
+
 		$usuario = $this->usuarios->usuario_completo();
-		$this->db->select('CC.*, cg.fecha fecha_gestion, cg.idgestion, cgt.descripcion gestion, cgt.label');
+		$this->db->select('CC.*, CCA.*, CCA.fecha fecha_gestion, CCA.descripcion gestion');
 		$this->db->from('core_clientes_sep CC');
-		$this->db->join('core_clientes_asignaciones CCA', 'CC.RBD = CCA.idrbd');
-		$this->db->join('core_cliente_gestion cg', 'CC.ULTIMA_GESTION = cg.id', 'left');
-		$this->db->join('core_gesitones_tipo cgt', 'cg.idgestion = cgt.id', 'left');
-		$this->db->where('CCA.idusuario', $usuario['ID']);
+		$this->db->join('vista_resumen_gestiones CCA', 'CC.RBD = CCA.rbd', 'left');
+		$this->db->where('CCA.idvendedor', $usuario['ID']);
+		if(isset($obj['tipo_colegio']) && $obj['tipo_colegio']!=""){
+			$this->db->where('CCA.tipo_colegio', $obj['tipo_colegio']);
+		}
+		if(isset($obj['gestion'])&&$obj['gestion']>0){
+			$this->db->where('CCA.descripcion is not null');
+		}else{
+			$this->db->where('CCA.descripcion is null');
+		}
+
 		$query = $this->db->get();
 		$row = $query->result_array();
 		$data = array();
@@ -30,16 +39,16 @@ class mod_crm extends CI_Model{
 	}
 
 	function resumen_gestiones($obj){
-		
+
 		$this->db->select("DATE_FORMAT(fecha, '%m-%Y') as fecha, cgt.descripcion, COUNT(ccg.idgestion) as total", FALSE);
 		$this->db->from('core_cliente_gestion ccg');
 		$this->db->join('core_gesitones_tipo cgt', 'ccg.idgestion = cgt.id', 'left');
 		if($obj['mes']>0){
 			$this->db->where("DATE_FORMAT( fecha,  '%m-%Y' )=", $obj['mes']."-".date("Y"));
 		}else{
-			$this->db->where("DATE_FORMAT( fecha,  '%m-%Y' )=", date("m-Y"));	
+			$this->db->where("DATE_FORMAT( fecha,  '%m-%Y' )=", date("m-Y"));
 		}
-		
+
 		$this->db->where('ccg.idvendedor', $this->vendedor['ID']);
 		$this->db->group_by('ccg.idgestion');
 		$query = $this->db->get();
@@ -88,29 +97,37 @@ class mod_crm extends CI_Model{
 
 		foreach($row as $r){
 			array_push($data, array(
-								"resumen"=>$r, 
-								"gestiones"=>$this->gestiones($r),
-								"cotizaciones"=>$this->cotizaciones($r), 
+								"resumen"=>$r,
+								"cotizaciones"=>$this->cotizaciones($r),
 								"contactos"=>$this->contactos($r),
 								"gestiones"=>$this->traer_gestiones($r),
-								"facturas"=>$this->traer_facturas_detalle($r)
+								"facturas"=>$this->traer_facturas_detalle($r),
+								"asignacion"=>$this->traer_asignacion($r)
 								)
 			);
 		}
 		return $data;
 	}
 
+	function traer_asignacion($obj){
+		$this->db->select('cca.*, cu.ID idvendedor, cu.NOM_EJECUTIVO vendedor');
+		$this->db->where('cca.idrbd', $obj['RBD']);
+		$this->db->from('core_clientes_asignaciones cca');
+		$this->db->join('core_usuarios cu', 'cca.idusuario = cu.ID', 'left');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	function traer_facturas_detalle($obj){
-		$this->db->select('fd.fecha, fd.idfactura, fd.unidades, fd.descripcion, fd.neto, fg.mes, fg.year');
-		$this->db->from('factura_detalle fd');
-		$this->db->join('factura_general fg', 'fd.idfactura = fg.idfactura', 'left');
-		$this->db->where('fg.rbd', $obj['RBD']);
+
+		$this->db->from('factura_general');
+		$this->db->where('rbd', $obj['RBD']);
 		$query = $this->db->get();
 		return $query->result_array();
 	}
 
 	function gestiones($obj){
-		
+
 	}
 
 	function cotizaciones($obj){
@@ -157,8 +174,8 @@ class mod_crm extends CI_Model{
 	}
 
 	function crear_gestion($obj){
-		
-		
+
+
 			$datos = array(
 				"idvendedor"=>$this->vendedor['ID'],
 				"idcamp"=>1,
@@ -170,7 +187,7 @@ class mod_crm extends CI_Model{
 				"hora_agendamiento"=>$obj['hora_agenda'],
 				"idproducto"=>$obj['producto']
 				);
-			
+
 		if($this->db->insert('core_cliente_gestion', $datos)){
 			$id = $this->db->insert_id();
 			//marcar interes del prospecto
@@ -200,9 +217,9 @@ class mod_crm extends CI_Model{
 	}
 
 	function crear_gestion_vendedor($obj_cambio, $obj){
-		
+
 			$datos = $obj_cambio;
-		
+
 		if($this->db->insert('core_cliente_gestion', $datos)){
 			$id = $this->db->insert_id();
 			//marcar interes del prospecto
@@ -225,7 +242,7 @@ class mod_crm extends CI_Model{
 	}
 
 	function asignar_al_vendedor($obj){
-		
+
 		if($obj['gestion'] == 39){$gestion = 2;}
 		elseif($obj['gestion'] == 5){$gestion = 31;}
 
@@ -233,7 +250,7 @@ class mod_crm extends CI_Model{
 		$this->db->where('idrbd', $obj['rbd']);
 		$query = $this->db->get('core_clientes_asignaciones');
 		$total_asignaciones = $query->num_rows();
-		
+
 		#renombrar la gestón al vendedor
 		$datos_gestion = array(
 				"idvendedor"=>$obj['responsable'],
@@ -247,17 +264,17 @@ class mod_crm extends CI_Model{
 				"idproducto"=>$obj['producto']
 				);
 
-		
+
 		if($total_asignaciones>0){
 			$this->crear_gestion_vendedor($datos_gestion, $obj);
 			return true;
-			
+
 		}else{
 			$this->crear_gestion_vendedor($datos_gestion);
 			$datos = array("idrbd"=>$obj['rbd'], "idusuario"=>$obj['responsable'], "idasignador"=>$this->vendedor['ID']);
-			
+
 			return $this->db->insert('core_clientes_asignaciones', $datos);
-			
+
 
 		}
 
@@ -301,19 +318,19 @@ class mod_crm extends CI_Model{
 			$vendedor = $us['ID'];
 
 			//nombre del dia de la semana
-			$fecha = $dia.'-'.date("m").'-'.date("Y"); //5 agosto de 2004 por ejemplo  
-			$fechats = strtotime($fecha); //a timestamp 
-			//el parametro w en la funcion date indica que queremos el dia de la semana 
-			//lo devuelve en numero 0 domingo, 1 lunes,.... 
-			switch (date('w', $fechats)){ 
-			    case 0: $nombre_dia = "Domingo"; break; 
-			    case 1: $nombre_dia = "Lunes"; break; 
-			    case 2: $nombre_dia = "Martes"; break; 
-			    case 3: $nombre_dia = "Miercoles"; break; 
-			    case 4: $nombre_dia = "Jueves"; break; 
-			    case 5: $nombre_dia = "Viernes"; break; 
-			    case 6: $nombre_dia = "Sabado"; break; 
-			}  
+			$fecha = $dia.'-'.date("m").'-'.date("Y"); //5 agosto de 2004 por ejemplo
+			$fechats = strtotime($fecha); //a timestamp
+			//el parametro w en la funcion date indica que queremos el dia de la semana
+			//lo devuelve en numero 0 domingo, 1 lunes,....
+			switch (date('w', $fechats)){
+			    case 0: $nombre_dia = "Domingo"; break;
+			    case 1: $nombre_dia = "Lunes"; break;
+			    case 2: $nombre_dia = "Martes"; break;
+			    case 3: $nombre_dia = "Miercoles"; break;
+			    case 4: $nombre_dia = "Jueves"; break;
+			    case 5: $nombre_dia = "Viernes"; break;
+			    case 6: $nombre_dia = "Sabado"; break;
+			}
 			//
 			$eventos = $this->traer_eventos($dia, $dia_inicio, $dia_fin, $vendedor);
 			array_push($pendientes, array("dia"=>$dia, "eventos"=>$eventos, "fecha_dia"=>$fecha, "nombre_dia"=>$nombre_dia));
@@ -360,14 +377,14 @@ class mod_crm extends CI_Model{
 
 	function agregar_usuario_colegio($obj){
 		$datos = array("RBD"=>$obj['rbd'], "NOMBRE"=>$obj['nombre'],
-				"CARGO"=>$obj['cargo'], "EMAIL"=>$obj['email'], 
+				"CARGO"=>$obj['cargo'], "EMAIL"=>$obj['email'],
 				"TELEFONO"=>$obj['telefono']);
 
 		return $this->db->insert('core_cliente_contacto', $datos);
 	}
 
 	//segmentacion de mercado
-	
+
 	function traer_regiones(){
 		$this->db->order_by('ID_REGION');
 		$regiones = $this->db->get('vista_colegios_regiones');
@@ -384,7 +401,7 @@ class mod_crm extends CI_Model{
 		$row_dependencia = $dependencia->result_array();
 		$data = array();
 		foreach($row_dependencia as $rd){
-			
+
 		}
 	}
 
@@ -449,7 +466,7 @@ class mod_crm extends CI_Model{
 	}
 
 	function traer_cotizaciones(){
-		
+
 		$usuario = $this->usuarios->usuario_completo();
 		$this->db->where('cg.idvendedor', $usuario['ID']);
 		$this->db->select('cg.id, cg.fecha, cg.colegio, cg.contacto, cg.rbd, ccs.ALUMNOS_SEP alumnos_sep, cg.neto, cg.porcentaje_cierre, cg.estado');
@@ -507,13 +524,13 @@ class mod_crm extends CI_Model{
 
 		$vendedor = $this->db->get('core_usuarios');
 		$row_vendendedor = $vendedor->result_array();
-		
+
 		$gestiones_vendedores = array();
 
 		foreach($row_vendendedor as $rv){
 
 			$detalle_gestion = array();
-			
+
 
 			$this->db->where('idusuario', $rv['ID']);
 			$g = $this->db->get('core_clientes_asignaciones');
@@ -536,7 +553,7 @@ class mod_crm extends CI_Model{
 	function buscar_colegio_old($obj){
 
 		$colegio = is_int($obj['colegio']);
-		
+
 		if($colegio){
 			$this->db->where('RBD', $obj['colegio']);
 			$query = $this->db->get('vista_cartera_full');
@@ -546,7 +563,7 @@ class mod_crm extends CI_Model{
 			$query = $this->db->get('vista_cartera_full');
 		}
 
-			
+
 			return $query->result_array();
 	}
 
@@ -571,6 +588,8 @@ class mod_crm extends CI_Model{
 		return $contador;
 
 	}*/
+
+
 }
 
  ?>
