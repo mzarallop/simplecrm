@@ -19,7 +19,7 @@
 			      	    	<th></th>
 			      	    	<th>Rbd</th>
 			      	    	<th>Colegio</th>
-
+			      	    	<th>Región</th>
 			      	    	<th>Comuna</th>
 			      	    	<th>SEP</th>
 
@@ -36,7 +36,7 @@
 			      	    		<td style="border-left: 6px solid <?= $color; ?>;"><span class="segmento"><?= $mc['colegio']['SEGMENTO'] ?></span></td>
 			      	    		<td><?= $mc['colegio']['RBD'] ?></td>
 			      	    		<td><?= $mc['colegio']['NOMBRE'] ?></td>
-
+			      	    		<td><?= $mc['colegio']['REGION'] ?></td>
 			      	    		<td><?= $mc['colegio']['COMUNA'] ?></td>
 			      	    		<td><?= $mc['colegio']['ALUMNOS_SEP'] ?></td>
 			      	    		<?php //$monto_sep = ($mc['colegio']['ALUMNOS_SEP']*35000*12); ?>
@@ -70,7 +70,7 @@
 			      	    	<th></th>
 			      	    	<th>Rbd</th>
 			      	    	<th>Colegio</th>
-
+							<th>Región</th>
 			      	    	<th>Comuna</th>
 			      	    	<th>SEP</th>
 
@@ -87,6 +87,7 @@
 			      	    		<td style="border-left: 6px solid <?= $color; ?>;"><span class="segmento"><?= $mu['colegio']['SEGMENTO'] ?></span></td>
 			      	    		<td><?= $mu['colegio']['RBD'] ?></td>
 			      	    		<td><?= $mu['colegio']['NOMBRE'] ?></td>
+			      	    		<td><?= $mu['colegio']['REGION'] ?></td>
 
 			      	    		<td><?= $mu['colegio']['COMUNA'] ?></td>
 			      	    		<td><?= $mu['colegio']['ALUMNOS_SEP'] ?></td>

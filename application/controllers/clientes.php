@@ -26,7 +26,7 @@ class Clientes extends CI_Controller {
 			"tipo_colegio"=>'Municipal',
 			"gestion"=>$idcartera)
 		);
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
@@ -43,7 +43,7 @@ class Clientes extends CI_Controller {
 		$datos['js'] = array("clientes/crm.js","clientes/cobertura.js", "moneda.min.js", "jquery.age.js",
 							"jquery.dataTables.js", "highcharts.js", "exporting.js", "funnel.js");
 		$datos['title'] = 'Cobertura';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
@@ -60,7 +60,7 @@ class Clientes extends CI_Controller {
 		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js",
 							"jquery.dataTables.js", "highcharts.js", "exporting.js", "funnel.js");
 		$datos['title'] = 'Mis Asignaciones';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
@@ -77,7 +77,7 @@ class Clientes extends CI_Controller {
 		$datos['js'] = array("clientes/crm.js", "moneda.min.js", "jquery.age.js",
 							"jquery.dataTables.js", "highcharts.js", "exporting.js", "funnel.js");
 		$datos['title'] = 'Reporte de ventas';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
@@ -94,7 +94,7 @@ class Clientes extends CI_Controller {
 			$datos['title'] = 'Módulo de Gestiones';
 
 			$datos['facturas']  = $this->Mod_clientes->mostrar_facturas();
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 			$datos['regiones'] = $this->selectores->clientes_region();
 
 
@@ -115,7 +115,7 @@ class Clientes extends CI_Controller {
 			$datos['js'] = array("clientes/master.js");
 			$datos['title'] = 'Gestión de masterclass';
 			$datos['mi_cartera'] = $this->Mod_clientes->mi_cartera();
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 			$datos['regiones'] = $this->selectores->clientes_region();
 
 
@@ -134,7 +134,7 @@ class Clientes extends CI_Controller {
 			$datos['js'] = array("clientes/clientes.js");
 			$datos['title'] = 'Módulo de Gestiones';
 			$datos['vendedores'] = $this->selectores->sel_vendedores();
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 			$datos['regiones'] = $this->selectores->clientes_region();
 
 			$this->load->view('fijos/head', $datos);
@@ -150,7 +150,7 @@ class Clientes extends CI_Controller {
 			$datos['css'] = array("clientes/clientes.css");
 			$datos['js'] = array("clientes/clientes.js");
 			$datos['title'] = 'Gestión de clientes';
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 			$datos['regiones'] = $this->selectores->clientes_region();
 
 			$this->load->view('fijos/head', $datos);
@@ -166,7 +166,7 @@ class Clientes extends CI_Controller {
 			$datos['css'] = array();
 			$datos['js'] = array();
 			$datos['title'] = 'Ficha del Cliente';
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('clientes/ficha', $datos);
@@ -188,7 +188,7 @@ class Clientes extends CI_Controller {
 		$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js");
 		$datos['title'] = 'Módulo de cotizaciones';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/cotizacion', $datos);
@@ -213,7 +213,7 @@ class Clientes extends CI_Controller {
 		$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js");
 		$datos['title'] = 'Módulo de cotizaciones';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/upcotizacion', $datos);
@@ -231,7 +231,7 @@ class Clientes extends CI_Controller {
 				$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js", "clientes/ejecutivos.js");
 		$datos['title'] = 'Banco de colegios';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/buscarcolegios', $datos);
@@ -249,7 +249,7 @@ class Clientes extends CI_Controller {
 				$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/oportunidades.js", "clientes/tmp_productos.js");
 		$datos['title'] = 'Oportunidades';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/oportunidades', $datos);
@@ -267,7 +267,7 @@ class Clientes extends CI_Controller {
 				$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "usabilidad.js", "clientes/tmp_productos.js", "clientes/reporte_gestion.js");
 		$datos['title'] = 'Reporte de gestión';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/gestion', $datos);
@@ -284,7 +284,7 @@ class Clientes extends CI_Controller {
 		$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js");
 		$datos['title'] = 'Selecciona el colegio';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/productos', $datos);
@@ -302,7 +302,7 @@ class Clientes extends CI_Controller {
 		$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js");
 		$datos['title'] = 'Banco de cotizaciones';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/bacocotizacion', $datos);
@@ -322,7 +322,7 @@ class Clientes extends CI_Controller {
 		$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js");
 		$datos['title'] = 'Reporte de cotizaciones';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/reportes', $datos);
@@ -340,7 +340,7 @@ class Clientes extends CI_Controller {
 		$datos['css'] = array("clientes/clientes.css");
 		$datos['js'] = array("clientes/clientes.js", "clientes/tmp_productos.js");
 		$datos['title'] = 'Clientes';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('clientes/clientes', $datos);

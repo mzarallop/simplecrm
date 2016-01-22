@@ -27,6 +27,5 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>js/<?php echo $java; ?>"></script>
 <?php endforeach; ?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrO_ASb-jGw0wrubNplRUQ-_IUpUZ7reU&signed_in=true&callback=initMap"></script>
-
 </head>
 <body>

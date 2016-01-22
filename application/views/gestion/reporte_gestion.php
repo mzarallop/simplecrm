@@ -1,19 +1,19 @@
 <div class="row-fluid">
 	<div class="span12">
+	<div id="demo"></div>
 		<?php
 			$semana4 = date("W")-1;
 			$semana3 = $semana4-1;
 			$semana2 = $semana3-1;
 			$semana1 = $semana2-1;
 		?>
-		Resumen Ejecutivos<br>
 		<table id="resumen_ejecutivos" class="table table-condensed table-striped table-bordered" style="font-size:11px;">
 		<thead>
 			<tr>
 				<th>ID</th>
 				<th>NOMBRE</th>
 				<th>ANEXO</th>
-				<th>CA</th>
+				<th><a href="#" title="Cartera Asignada">CA</a></th>
 				<th>SG</th>
 				<th>AVG_S</th>
 				<th>SG_PS</th>
@@ -77,7 +77,7 @@
 				<?php
 					$avg_call = ($r['resumen']['call1']+$r['resumen']['call2']+$r['resumen']['call3']+$r['resumen']['call4'])/4;
 				 ?>
-				<td style="background-color:rgba(0, 196, 255, 0.17);text-align:center;"><?= $avg_call ?></td>
+				<td style="background-color:rgba(0, 128, 28, 0.31); text-align:center;"><?= $avg_call ?></td>
 				<td>
 					<button class="btn btn-mini btn-primary" onclick="detalle_reporte(<?= $r['resumen']['idv'] ?>, '<?= $r['resumen']['idsemana'] ?>')">
 						<i class="icon-white icon-search"></i>
@@ -148,6 +148,11 @@
 			<tr>
 				<td>AVG_C</td>
 				<td>Promedio de cotizaciones del mes</td>
+				<td>CALL</td>
+				<td>Total de llamadas de la semana</td>
+				<td>AVG_CALL</td>
+				<td>Promedio de llamadas semanales</td>
+
 			</tr>
 		</table>
 	</div>

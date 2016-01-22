@@ -1,7 +1,7 @@
 <?php
 class lib_menu{
 
-	function menu_usuarios()
+	function menu_usuarios($titulo = 'CRM')
 		{
 			$ci = get_instance();
 			$usuario = $ci->session->userdata('acceso');
@@ -33,16 +33,17 @@ class lib_menu{
 			$query = $ci->db->query($sql);
 			$row = $query->result_array();
 
-				$div = '<div class="navbar">
-						<div class="navbar-inner">
-
+				$div = '<div class="navbar navbar-inverse navbar-fixed-top">
+						<div class="navbar-inner" style="padding-left: 10px;padding-right: 10px;">
+						<a href="'.base_url().'" class="brand">'.$titulo.'</a>
 						  <ul class="nav">';
 
 	        foreach($row as $r)
 			{
 				if($r['nombre']=='Cartera'){
-					$div.='<li id="cartera"><a href="" class="dropdown-toggle" data-toggle="dropdown">'.$r['nombre'].' <b class="caret"></b></a>
-					 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+					$div.='<li id="cartera" class="dropdown">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown">'.$r['nombre'].' <b class="caret"></b></a>
+					 <ul class="dropdown-menu">
 						<li>
 							<a href="'.base_url().'clientes/index/1">Cartera Gestionada</a>
 							<a href="'.base_url().'clientes/index/0">Cartera Sin Gestión</a>
@@ -56,8 +57,9 @@ class lib_menu{
 					//'.base_url().$r['path'].'
 
 				}elseif($r['nombre']=='Reportes'){
-					$div.='<li id="reportes"><a href="" class="dropdown-toggle" data-toggle="dropdown">'.$r['nombre'].' <b class="caret"></b></a>
-					 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+					$div.='<li id="reportes" class="dropdown">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown">'.$r['nombre'].' <b class="caret"></b></a>
+					 <ul class="dropdown-menu">
 						<li>
 							<a href="'.base_url().$r['path'].'">Reporte General</a>
 							<a href="'.base_url().'gestion/resumen_gestion">Reporte mensual gestión</a>
@@ -67,20 +69,22 @@ class lib_menu{
 					</li>';
 				}
 				else{
-					$div.='<li id="'.$r['idtag'].'"><a href="'.base_url().$r['path'].'">'.$r['nombre'].'</a></li>';
 
 				}
 			}
-				$div.='<li id="reportes"><a href="" class="dropdown-toggle" data-toggle="dropdown">Facturas <b class="caret"></b></a>
-					 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+				$div.='<li id="reportes" class="dropdown">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown">Facturas <b class="caret"></b></a>
+					 <ul class="dropdown-menu">
 						<li>
-							<a href="'.base_url().'clientes/facturas/">Factura de Venta</a>
+							<a href="'.base_url().'facturas/">Factura de Venta</a>
 							<a href="'.base_url().'clientes/factura_compra">Factura de compras</a>
 							<a href="'.base_url().'clientes/reporte">Reportes</a>
 						</li>
   					</ul>
 					</li>';
+				$div.='<li id="Salir"><a href="http://localhost/crmkdoce/accesos/logout/#salir">Salir del sistema</a></li>';
 				$div.='</ul>';
+
 				$div.='<div class="navbar-form pull-right">
 						  <input type="text" id="finder" name="finder" class="span2" placeholder="RBD o Nombre">
 						  <button  class="btn" onclick="buscar_colegio();"><i class="icon-search"></i>Buscar</button>

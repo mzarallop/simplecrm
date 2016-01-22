@@ -93,3 +93,34 @@ border-top: 2px solid darkorange;
 	text-decoration: none;
 	color:white;
 }
+/*FACTURA*/
+.documento_factura{
+    border: 1px solid #DDD;
+    min-height: 550px;
+    padding: 10px;
+}
+.numero_factura {
+    border: 2px solid red;
+    min-height: 150px;
+    margin: 10px;
+    color: red;
+    width: 100%;
+    float: right;
+    right: 0;
+}
+.tipo_doc {
+    font-size: 2.5em;
+    text-align: center;
+    padding: 50px 0 40px 0;
+    font-weight: bold;
+}
+.rut{
+    text-align: center;
+    font-size: 2em;
+    margin-top: 15px;
+}
+.numero_doc {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 15px;
+}

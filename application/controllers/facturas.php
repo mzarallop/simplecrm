@@ -2,55 +2,43 @@
 
 class Facturas extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index()
-	{
-			$this->usuarios->verificar_login();
-			$datos['css'] = array("bootstrap.css", "bootstrap.min.css");
-			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js");
-			$datos['title'] = 'Gestión de Proyectos';
-
-			$this->load->database();
-			$this->load->view('fijos/head', $datos);
-			$this->load->view('proyecto/index', $datos);
-			$this->load->view('fijos/footer');
-	}
-	
-	public function mensaje()
-	{
-		$this->usuarios->verificar_login();
-		$this->load->view('mensaje');	
+	function __construct(){
+		parent::__construct();
+		$this->load->model('mod_facturas');
+		$this->load->model('Mod_clientes');
 	}
 
-	public function tareas()
-	{
+	function index(){
 		$this->usuarios->verificar_login();
-	}
 
-	public function asignaciones()
-	{
-		$this->usuarios->verificar_login();
-	}
+		$datos['usuario'] = $this->usuarios->datos_usuarios();
+		$datos['css'] = array("clientes/clientes.css");
+		$datos['js'] = array("clientes/clientes.js", "facturas/facturas.js");
+		$datos['title'] = 'Módulo de Gestiones';
+		$datos['productos']  = $this->mod_facturas->productos_opt();
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
+		$datos['coordinador'] = $this->mod_facturas->ejecutivos(2);
+		$datos['vendedor'] = $this->mod_facturas->ejecutivos(3);
 
-	public function reportes()
-	{
-		$this->usuarios->verificar_login();
+		$this->load->view('fijos/head', $datos);
+		$this->load->view('fijos/menu', $datos);
+		$this->load->view('clientes/facturas', $datos);
+		$this->load->view('fijos/footer');
 	}
-	
+	function ajax(){
+		switch($_POST['case']){
+			case 1:
+				$r = $this->mod_facturas->buscar_datos($_POST);
+				echo json_encode($r);
+			break;
+			case 2:
+				$r = $this->mod_facturas->buscar_datos($_POST);
+				echo json_encode($r);
+			break;
+			default:
+			break;
+		}
+	}
 }
 
 /* End of file welcome.php */

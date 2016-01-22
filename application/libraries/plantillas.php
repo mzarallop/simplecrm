@@ -31,7 +31,7 @@ class plantillas{
 			$div.='<td width="15%" style="border-bottom:1px solid rgb(238,238,238);border-right:1px solid rgb(238,238,238);">Código:</td>';
 			$div.='<td width="35%" style="border-bottom:1px solid rgb(238,238,238);border-right:1px solid rgb(238,238,238);"><b>'.$obj['col']['id'].'</b></td>';
 			$div.='<td width="15%" style="border-bottom:1px solid rgb(238,238,238);border-right:1px solid rgb(238,238,238);">Emisión:</td>';
-			$div.='<td width="35%" style="border-bottom:1px solid rgb(238,238,238);border-right:1px solid rgb(238,238,238);">'.date("d-m-Y h:m:s").'</td>';
+			$div.='<td width="35%" style="border-bottom:1px solid rgb(238,238,238);border-right:1px solid rgb(238,238,238);">'.$obj['col']['fecha'].'</td>';
 			$div.='</tr>';
 			if(!empty($obj['sostenedor'])){
 			$div.='<tr>';

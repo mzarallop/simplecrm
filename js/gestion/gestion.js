@@ -596,3 +596,18 @@ jQuery.download = function(url, data, method) {
             .appendTo('body').submit();
     };
 };
+
+function initMap(){
+
+}
+function resumen_gestion(){
+
+	capsula_asincrona({path:'gestion/ajax', case:9},
+	function(dato){
+		var data = dato
+
+	},
+	true,
+	"#demo")
+
+}

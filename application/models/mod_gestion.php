@@ -258,9 +258,9 @@ class mod_gestion extends CI_Model{
 		return $datos;
 	}
 
-	function reporte_gestiones($obj){
+	function reporte_gestiones($obj, $usuario){
 		$data = array();
-			$query = $this->db->query('call sp_reporte_gestion(2)');
+			$query = $this->db->query('call sp_reporte_gestion(2,'.$usuario.')');
 			$row = $query->result_array();
 			$query->next_result();
 		foreach($row as $r){
