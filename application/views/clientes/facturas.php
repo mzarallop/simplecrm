@@ -5,33 +5,33 @@
 				<div class="row-fluid">
 					<div class="span8">
 					<h1>Three software</h1>
-						<table class="table table-condensed table-bordered">
+						<table class="table table-condensed">
 							<tr>
 								<td>Emisor:</td>
 								<td>
-									<select name="emisor" id="emisor">
+									<select name="emisor" id="emisor" class="span12">
 										<option value="76567317-K">Three Software SPA</option>
 									</select>
 								</td>
 								<td>Fecha:</td>
-								<td><input type="date" id="fecha_factura" value="<?= date("Y-m-d")  ?>"></td>
+								<td><input type="date" id="fecha_factura" value="<?= date("Y-m-d")  ?>" class="span12"></td>
 							</tr>
 							<tr>
-								<td>Razon Social:</td>
-								<td><input type="text" id="razon_social" disabled="true" class="span12"></td>
 								<td>RUT:</td>
 								<td><input type="text" id="rut_rbd" placeholder="Rut o RBD Receptor" class="span12" onblur="buscar_datos(this.value)"></td>
+									<td>Razon Social:</td>
+								<td><input type="text" id="razon_social" class="span12"></td>
 							</tr>
 							<tr>
 								<td>Dirección:</td>
-								<td><input type="text" id="direccion" disabled="true" class="span12"></td>
+								<td><input type="text" id="direccion" class="span12"></td>
 								<td>Comuna:</td>
-								<td><input type="text" id="comuna" class="span12" disabled="true"></td>
+								<td><input type="text" id="comuna" class="span12"></td>
 							</tr>
 							<tr>
 								<td>Coordinador:</td>
 								<td>
-									<select name="coordinador" id="coordinador" placeholder="coordinador">
+									<select name="coordinador" id="coordinador" placeholder="coordinador" class="span12">
 										<option value="0">--</option>
 										<?php foreach($coordinador as $co): ?>
 											<option value="<?= $co['ID'] ?>"><?=$co['NOM_EJECUTIVO'] ?></option>
@@ -40,7 +40,7 @@
 								</td>
 								<td>Vendedor:</td>
 								<td>
-									<select name="vendedor" id="vendedor" placeholder="vendedor">
+									<select name="vendedor" id="vendedor" placeholder="vendedor" class="span12">
 										<option value="0">--</option>
 										<?php foreach($vendedor as $co): ?>
 											<option value="<?= $co['ID'] ?>"><?=$co['NOM_EJECUTIVO'] ?></option>
@@ -54,8 +54,12 @@
 						<div class="numero_factura">
 							<div class="rut">RUT: 76.788.459-0</div>
 							<div class="tipo_doc">FACTURA</div>
-							<div class="numero_doc">N° 00000000234</div>
+							<div class="numero_doc">N°: <input class="correlativo_factura" type="text" value="" placeholder="000000234"></div>
 						</div>
+						<ul class="tipo_factura">
+						<li><label><input type="radio" value="1" group="tipo_factura"> Afecta</label></li>
+						<li><label><input type="radio" value="0" group="tipo_factura"> Excenta</label></li>
+						</ul>
 					</div>
 				</div>
 				<!--DETALLE DE LA COMPRA-->

@@ -1,4 +1,5 @@
 function buscar_datos(valor){
+
 	var data = capsula({path:'facturas/ajax', case:1, codigo:valor})
 	data = JSON.parse(data.fuente)
 	data = data[0]
@@ -15,12 +16,13 @@ function agregar_item(){
 		descripcion = descripcion.split('|')
 	var neto = parseInt(descripcion[2])
 	var codigo = parseInt(descripcion[0])
-	var items = $(".unidad").length; items = items+1
+	var items = $(".unidad_tr").length; items = items+1
 	var total_neto = parseInt(unidad)*parseInt(neto)
 	var total_fila = parseInt(total_neto)
+	if(parseInt(items)<=10){
 
-	//var datos = {unidad:unidad, descripcion:descripcion, neto:neto, path:'factura/ajax', case:2}
-	var tr = '<tr id="fila_'+items+'">'
+		//var datos = {unidad:unidad, descripcion:descripcion, neto:neto, path:'factura/ajax', case:2}
+		var tr = '<tr id="fila_'+items+'">'
 		tr+='<td style="text-align:center"><input type="hidden" id="codigo_'+items+'" value="'+codigo+'" class="codigo"/><input type="hidden" id="unidad_'+items+'"  class="unidad_tr" value="'+unidad+'"/>'+unidad+'</td>'
 		tr+='<td><input type="hidden" id="descripcion_'+items+'"  class="descripcion_tr" value="'+descripcion[1]+'" />'+descripcion[1]+'</td>'
 		tr+='<td><input type="hidden" id="neto_'+items+'"  class="neto_tr" value="'+neto+'" />$ '+moneda(neto)+'</td>'
@@ -28,8 +30,13 @@ function agregar_item(){
 		tr+='<td><input type="hidden" id="total_fila_'+items+'"  value="'+total_fila+'" class="total_fila_tr"/>$ '+moneda(total_fila)+'</td>'
 		tr+='<td><button class="btn btn-mini btn-danger" onclick="eliminar_fila('+items+')"><i class="icon-white icon-trash"></i></button></td>'
 		tr+='</tr>'
-	$("#detalle_factura>tbody").append(tr)
-	setTimeout(calcular_impuesto_factura(), '2000')
+		$("#detalle_factura>tbody").append(tr)
+		setTimeout(calcular_impuesto_factura(), '2000')
+
+	}else{
+		bootbox.alert('<h2>Advertencia!</h2>')
+	}
+
 }
 
 function eliminar_fila(item){

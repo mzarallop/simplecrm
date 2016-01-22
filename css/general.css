@@ -124,3 +124,24 @@ border-top: 2px solid darkorange;
     font-size: 2em;
     margin-bottom: 15px;
 }
+
+ul.tipo_factura{
+    padding: 5px;
+    background-color: rgb(238, 238, 238);
+    display: initial;
+    border-radius: 5px;
+    border: 1px solid #CCCCCC;
+}
+.tipo_factura>li{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 30%;
+    text-align: center;
+
+}
+input.correlativo_factura{
+    border: 1px solid red;
+    color: red;
+    text-align: right;
+    font-size: 25px;
+}
