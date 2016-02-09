@@ -174,64 +174,64 @@ class plantillas{
 	}
 
 	function contrato_renovacion(){
-		$div.='<h1>Contrato de Mantención de Servicio<br>“MasterClass”</h1>';
-		$div.='<p>En Santiago, a 30 de Octubre del año 2015, entre KDOCE SPA., RUT 76.319.406-K, domiciliada en calle Beaucheff #1171, comuna de Santiago, Región Metropolitana,  en adelante  “El Proveedor”, representada por el Sr. Rodrigo Andrés Villarroel Ramírez, RUT 15.329.741-K, propietario de todos los derechos de autor de la plataforma individualizada “MasterClass”, con idéntico domicilio, y la institución de educación COLEGIO DALMACIA, Rut: 96.955.930-5, Razón Social: SOCIEDAD EDUCACIONAL DALMACIA S.A. Domiciliado en Prolongación Calle Benavente s/n. Ciudad de Ovalle representada por el Sr.(a) SEBASTIAN ROBERTO DABED MARTINIC, C.I. 16.020.922-4 en  adelante la “Institución educacional”, acuerdan lo siguiente:</p>';
+		$div='<h1 style="text-align:center">Contrato de Mantención de Servicio<br>“MasterClass”</h1>';
+		$div.='<p style="text-align:justify">En Santiago, a '.date("d").' de Octubre del año '.date("Y").', entre <b>KDOCE SPA</b>, RUT <b>76.319.406-K</b>, domiciliada en calle Beaucheff #1171, comuna de Santiago, Región Metropolitana,  en adelante  “El Proveedor”, representada por el Sr. Rodrigo Andrés Villarroel Ramírez, RUT 15.329.741-K, propietario de todos los derechos de autor de la plataforma individualizada “MasterClass”, con idéntico domicilio, y la institución de educación <b>COLEGIO DALMACIA</b>, Rut: <b>96.955.930-5</b>, Razón Social: <b>SOCIEDAD EDUCACIONAL DALMACIA S.A</b>. Domiciliado en<b> Prolongación Calle Benavente s/n. Ciudad de Ovalle</b> representada por el Sr.(a) <b>SEBASTIAN ROBERTO DABED MARTINIC, C.I. 16.020.922-4</b> en  adelante la “Institución educacional”, acuerdan lo siguiente:</p>';
 		$div.='<p>Formalizan de contrato de servicio. “MasterClass” plataforma de gestión de recursos educativos formaliza el contrato de mantención y actualización de servicio con la institución adoptante de acuerdo a los siguientes puntos:</p>';
 
 		$div.='<h3>Modulo de Evaluaciones</h3>';
-		$div.='<p>“MasterClass” proveerá a las institución adoptante el modulo de evaluaciones digital de acuerdo a los contenidos propuestos por el MINEDUC, podrán acceder al banco de evaluaciones estandarizas, así como también podrán crear cualquier otro instrumento de evaluación.</p>';
+		$div.='<p style="text-align:justify">“MasterClass” proveerá a las institución adoptante el modulo de evaluaciones digital de acuerdo a los contenidos propuestos por el MINEDUC, podrán acceder al banco de evaluaciones estandarizas, así como también podrán crear cualquier otro instrumento de evaluación.</p>';
 
 		$div.='<h3>Modulo de Aprendizajes Claves:</h3>';
-		$div.='<p>“MasterClass” proveerá a la institución adoptante el modulo de evaluación de aprendizajes claves digital exigido por la Ley SEP, el modulo permite que institución visualice y aplique la evaluación de Diagnostico, Intermedia y Final, así como el acceso a los reportes exigidos por el Plan de Mejoramiento Educativo (PME).</p>';
+		$div.='<p style="text-align:justify">“MasterClass” proveerá a la institución adoptante el modulo de evaluación de aprendizajes claves digital exigido por la Ley SEP, el modulo permite que institución visualice y aplique la evaluación de Diagnostico, Intermedia y Final, así como el acceso a los reportes exigidos por el Plan de Mejoramiento Educativo (PME).</p>';
 
 		$div.='<h3>Evaluaciones Asistidas:</h3>';
-		$div.='<p>La institución adoptante puede acceder al servicio de evaluaciones asistidas durante el año para los aprendizajes claves. Dicho servicio considera un costo adicional la institución.</p>';
+		$div.='<p style="text-align:justify">La institución adoptante puede acceder al servicio de evaluaciones asistidas durante el año para los aprendizajes claves. Dicho servicio considera un costo adicional la institución.</p>';
 
 
 		$div.='<h3>Modulo de cronograma de planificaciones</h3>';
-		$div.='<p>“MasterClass” proveerá a las instituciones adoptantes el modulo de cronogramas de planificaciones pedagógicas digitales.  El modulo le permitirá la visualización de los cronogramas, así como también creación y modificación del las planificaciones del banco existente.</p>';
+		$div.='<p style="text-align:justify">“MasterClass” proveerá a las instituciones adoptantes el modulo de cronogramas de planificaciones pedagógicas digitales.  El modulo le permitirá la visualización de los cronogramas, así como también creación y modificación del las planificaciones del banco existente.</p>';
 
 		$div.='<h3>Modulo de Recursos</h3>';
-		$div.='<p>“MasterClass” proveerá un modulo de recursos digitales donde la institución adoptante podrá cargar nuevos recursos y visualizar el banco existente.</p>';
+		$div.='<p style="text-align:justify">“MasterClass” proveerá un modulo de recursos digitales donde la institución adoptante podrá cargar nuevos recursos y visualizar el banco existente.</p>';
 
 		$div.='<h3>Soporte en línea</h3>';
-		$div.='<p>La institución adoptante tendrá derecho a recibir soporte técnico oportuno en los tiempos y formas adecuadas, la institución podrá acceder directamente a nuestro número de soporte (02-2599 49 93) donde será atendido por ejecutivos de servicio en los siguientes horarios de atención Lunes a Viernes de 8:30 a 17:30 hrs. No obstante, el proveedor podrá realizar soporte en terreno si el problema persiste.</p>';
+		$div.='<p style="text-align:justify">La institución adoptante tendrá derecho a recibir soporte técnico oportuno en los tiempos y formas adecuadas, la institución podrá acceder directamente a nuestro número de soporte (02-2599 49 93) donde será atendido por ejecutivos de servicio en los siguientes horarios de atención Lunes a Viernes de 8:30 a 17:30 hrs. No obstante, el proveedor podrá realizar soporte en terreno si el problema persiste.</p>';
 
 		$div.='<h3>Actualización del software</h3>';
-		$div.='<p>La institución adoptante tendrá derecho a recibir la totalidad de las actualizaciones que se realicen durante el periodo del contrato.</p>';
+		$div.='<p style="text-align:justify">La institución adoptante tendrá derecho a recibir la totalidad de las actualizaciones que se realicen durante el periodo del contrato.</p>';
 
 
 		$div.='<h3>Respaldo de la Información:</h3>';
-		$div.='<p>La institución adoptante siempre podrá solicitar información de respaldo del último mes de uso.</p>';
+		$div.='<p style="text-align:justify">La institución adoptante siempre podrá solicitar información de respaldo del último mes de uso.</p>';
 
 		$div.='<h3>Accesos de Usuarios</h3>';
-		$div.='<p>“MasterClass” proveerá las claves de acceso para toda la comunidad educativa sin límite de usuarios. Se consideran alumnos, profesores y directivos según la matricula vigente del establecimiento.</p>';
+		$div.='<p style="text-align:justify">“MasterClass” proveerá las claves de acceso para toda la comunidad educativa sin límite de usuarios. Se consideran alumnos, profesores y directivos según la matricula vigente del establecimiento.</p>';
 
 		$div.='<h3>Capacitación a usuarios</h3>';
-		$div.='<p>“MasterClass” realiza proceso de capacitación necesario en el establecimiento para la plana docente y directivos que estimen participar y puesta en marcha de la plataforma. Considera además, proceso de capacitación diferenciado para la plana directiva y lideres de proyecto.</p>';
+		$div.='<p style="text-align:justify">“MasterClass” realiza proceso de capacitación necesario en el establecimiento para la plana docente y directivos que estimen participar y puesta en marcha de la plataforma. Considera además, proceso de capacitación diferenciado para la plana directiva y lideres de proyecto.</p>';
 		return $div;
 	}
 
-	function temrino_contrato(){
+	function termino_contrato(){
 
 		$div='<h2>Termino del Contrato</h2>';
-		$div.='<p>La institución adoptante podrá poner términos al presente contrato, comunicando mediante carta certificada el deseo de no continuar con el servicio. Deberá informarse con un plazo mínimo de 60 días anteriores al vencimiento del contrato. En ese momento “MasterClass” dejara de actualizar los contenidos, recursos y funciones.</p>';
+		$div.='<p style="text-align:justify">La institución adoptante podrá poner términos al presente contrato, comunicando mediante carta certificada el deseo de no continuar con el servicio. Deberá informarse con un plazo mínimo de 60 días anteriores al vencimiento del contrato. En ese momento “MasterClass” dejara de actualizar los contenidos, recursos y funciones.</p>';
 
 		$div='<h2>Renovación del contrato</h2>';
-		$div.='<p>Sin perjuicio del artículo anterior, el contrato se renovara en forma automática por plazos iguales sucesivos de un año.</p>';
+		$div.='<p style="text-align:justify">Sin perjuicio del artículo anterior, el contrato se renovara en forma automática por plazos iguales sucesivos de un año.</p>';
 
 		$div='<h2>Precio del servicio</h2>';
-		$div.='<p>El precio del servicio de mantención de “MasterClass” es de 90 UF más IVA anuales.</p>';
+		$div.='<p style="text-align:justify">El precio del servicio de mantención de “MasterClass” es de 90 UF más IVA anuales.</p>';
 
 
 		$div='<h2>Facturación del Servicio</h2>';
-		$div.='<p>La institución adoptante Faculta a “MasterClass” a enviar la respectiva factura de servicios con 30 días de anticipación al vencimiento del contrato.</p>';
+		$div.='<p style="text-align:justify">La institución adoptante Faculta a “MasterClass” a enviar la respectiva factura de servicios con 30 días de anticipación al vencimiento del contrato.</p>';
 
 
-		$div.='<p>En comprobante y previa lectura, firman las partes el presente contrato en 2 ejemplares.</p>';
+		$div.='<p style="text-align:justify">En comprobante y previa lectura, firman las partes el presente contrato en 2 ejemplares.</p>';
 
 
-		$div.='<p>
+		$div.='<p></p><p style="text-align:justify">
 			<table width="100%">
 			<tr>
 				<td width="25%" style="border-bottom:1px solid gray"></td>
