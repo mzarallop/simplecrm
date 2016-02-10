@@ -1,7 +1,5 @@
-<div class="space_footer"></div>
 <div class="footer">
-CRM Kdoce soluciones Educativas | Correo soporte: <a href="javascript:;" id="soporte">soporte@kdoce.cl</a> 
-
+	Rut: <?= $empresa['rut'] ?> - Razon Social: <?= $empresa['razon_social'] ?> - Teléfono: <?= $empresa['telefono_empresa'] ?> - Email: <?= $empresa['email_empresa'] ?>
 </div>
 </body>
 </html>

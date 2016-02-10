@@ -22,6 +22,8 @@ function login() {
                 if(p === 2)
                 {
                     window.location.href = server + 'clientes/index/1'
+                }else if(p > 2){
+                    window.location.href = server + 'clientes/index/1'
                 }else if(p === 1){
                     window.location.href = server + 'gestion/resumen_gestion/'
                 }
@@ -34,6 +36,7 @@ function login() {
     })
 }
 
+function initMap(){}
 function salirCRM() {
     $.ajax({
         url: server + 'accesos/logout/',

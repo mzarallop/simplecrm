@@ -58,8 +58,7 @@ bottom:0;
 text-align:center;
 margin:0 auto;
 text-align:middle;
-color:rgb(0, 20, 245);
-border-top: 2px solid darkorange;
+
 }
 .footer>.notificacion
 {
@@ -92,4 +91,71 @@ border-top: 2px solid darkorange;
 	margin-top: 5px;
 	text-decoration: none;
 	color:white;
+}
+/*FACTURA*/
+.documento_factura{
+    border: 1px solid #DDD;
+    min-height: 550px;
+    padding: 10px;
+}
+.numero_factura {
+    border: 2px solid red;
+    min-height: 150px;
+    margin: 10px;
+    color: red;
+    width: 100%;
+    float: right;
+    right: 0;
+}
+.tipo_doc {
+    font-size: 2.5em;
+    text-align: center;
+    padding: 50px 0 40px 0;
+    font-weight: bold;
+}
+.rut{
+    text-align: center;
+    font-size: 2em;
+    margin-top: 15px;
+}
+.numero_doc {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+ul.tipo_factura{
+    padding: 5px;
+    background-color: rgb(238, 238, 238);
+    display: initial;
+    border-radius: 5px;
+    border: 1px solid #CCCCCC;
+}
+.tipo_factura>li{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 30%;
+    text-align: center;
+
+}
+input.correlativo_factura{
+    border: 1px solid red;
+    color: red;
+    text-align: right;
+    font-size: 25px;
+}
+#login{
+    display: inline-block;
+    text-align: center;
+    margin-top: 5%;
+    padding: 4%;
+    background-color: rgba(105, 105, 105, 0.05);
+    margin-left: 40%;
+    max-width: 20%;
+    min-width: 250px;
+    border: 1px solid rgba(105, 105, 105, 0.38);
+}
+
+#login img{
+    margin:10%;
 }

@@ -1,3 +1,6 @@
+function initMap(){
+
+}
 function fecha_entero(fecha) {
     var elem = fecha.split('/');
     dia = elem[0];
@@ -735,7 +738,7 @@ function ajustar_cotizacion() {
     var total_neto_afecto = 0;
     var total_neto_sin_iva = 0;
     for (var i = 0; i < vector_productos.length; i++) {
-        
+
         var producto = parseInt(vector_productos[i])
         var unidad = parseInt(vector_unidades[i])
         var neto = parseInt(vector_neto[i])
@@ -751,7 +754,7 @@ function ajustar_cotizacion() {
             var calculo_iva = parseInt(((unidad * neto)*0.19))
             var total_mas_iva = parseInt(((unidad * neto)+calculo_iva))
             total_neto_afecto += parseInt(total_mas_iva)
-            
+
             $("#total_fila_" + producto).text(total_neto_afecto)
             $("#iva_fila_" + producto).text(calculo_iva)
             $("#total_neto_fila_" + producto).text((unidad * neto))
@@ -760,19 +763,19 @@ function ajustar_cotizacion() {
             var calculo_iva = parseInt(0)
             var total_mas_iva = parseInt((unidad * neto))
             total_neto_sin_iva += parseInt(total_mas_iva)
-            
+
             $("#iva_fila" + producto).text(calculo_iva)
             $("#total_fila_" + producto).text(total_mas_iva)
             $("#total_neto_fila_" + producto).text((unidad * neto))
         }
     }
-    
+
     var total_neto = (parseInt(total_neto_afecto) + parseInt(total_neto_sin_iva))
     var neto_sin_iva = ((total_neto_afecto/1.19)+total_neto_sin_iva)
     var iva = (total_neto_afecto-(parseInt(total_neto_afecto)/1.19))
     var total_final = (parseInt(neto_sin_iva)+iva)
     console.log(neto_sin_iva, iva, total_final)
-    
+
     $("#total_neto").text(neto_sin_iva)
     $("#iva").text(iva)
     $("#total_iva").text(total_final)
@@ -929,7 +932,7 @@ function buscar_colegio() {
     $(".modal-footer > a.btn").trigger('click')
 
     var result = JSON.parse(proc.responseText)
-    var total_result = parseInt(result.length) 
+    var total_result = parseInt(result.length)
     if(total_result > 0)
     {
         var html = ''
@@ -984,14 +987,14 @@ function buscar_colegio() {
 
                         var procesar = capsula(datos)
                         var data = JSON.parse(procesar.fuente)
-                        
-                        
+
+
                         if(data.estado){
                             window.location.href = server + 'clientes/cotizacion/'+data.rbd
                         }else{
 
                         }
-                        
+
                     }
                 })
             }
@@ -1044,14 +1047,14 @@ function nuevo_colegio(){
 
                         var procesar = capsula(datos)
                         var data = JSON.parse(procesar.fuente)
-                        
-                        
+
+
                         if(data.estado){
                             window.location.href = server + 'clientes/cotizacion/'+data.rbd
                         }else{
 
                         }
-                        
+
                     }
                 })
 }
@@ -1226,7 +1229,7 @@ function llamadas(){
 }
 
 function tmp_llamadas(obj){
-    
+
         var html = ''
         var total_llamadas = 0
         var contador_llamadas = 1
@@ -1235,13 +1238,13 @@ function tmp_llamadas(obj){
                 if(this.disposition ==='ANSWERED')
                 {
                     if(this.duration >= 60){
-                        total_llamadas+=seg     
+                        total_llamadas+=seg
                         contador_llamadas++
                     }
                 }else{
 
                 }
-                
+
         })
         var total_hablado = conversor_segundos(total_llamadas)
         html+='<div class="resumen_ejecutivo"><p>Se consideraron solo las llamadas superiores a 59 segundos.</p><h1>Gestión efectiva: '+total_hablado+' | Total de llamadas: '+contador_llamadas+'</h1></div>'
@@ -1266,14 +1269,14 @@ function tmp_llamadas(obj){
         html+='<tr>'
         html+='<td>'+this.calldate+'</td>'
         html+='<td>'+this.dst+'</td>'
-        
+
         html+='<td>'+this.tiempo+'</td>'
         if(this.disposition ==='ANSWERED'){
             html+='<td><span class="badge badge-success"><i class="icon-white icon-ok"></i></span></td>'
         }else{
             html+='<td><span class="badge badge-warning"><i class="icon-white icon-remove"></i></span></td>'
         }
-        
+
         html+='<td><audio controls preload="none"><source src="'+grabacion+'" type="audio/wav"></source></audio></td>'
 
         html+='</tr>'
@@ -1336,7 +1339,7 @@ function tmp_reporte_llamadas(obj){
                 html+=tmp_llamadas(this.llamadas)
                 html+='</div>'
             html+='</div>'
-        html+='</div>'    
+        html+='</div>'
         })
     html+='</div></div>'
 
@@ -1368,7 +1371,7 @@ function tmp_reporte_llamadas_resumen(obj){
                 html+='<td>No registra</td>'
         }
 
-        
+
         html+='<td>'+total_llamadas+'</td>'
         var contestadas = new Array
         var tres = new Array
@@ -1377,7 +1380,7 @@ function tmp_reporte_llamadas_resumen(obj){
         var data_rc = {vendedor:this.usuario.ID, inicio:$("#inicio").val(), termino:$("#termino").val() }
         var rc = reporte_cotizaciones_resumen(data_rc)
         $.each(this.llamadas, function(){
-            
+
                 var seg = parseInt(this.duration)
                 if(seg>60 && seg<=180){
                     tres.push(this)
@@ -1388,7 +1391,7 @@ function tmp_reporte_llamadas_resumen(obj){
                 else if(seg>300){
                     ideal.push(this)
                 }
-            
+
         })
         html+='<td>'+tres.length+'</td>'
         html+='<td>'+cinco.length+'</td>'
@@ -1408,7 +1411,7 @@ function tmp_reporte_llamadas_resumen(obj){
 }
 
 function ver_detalle_llamadas(usuario,anexo){
-    
+
     var datos = {usuario:usuario, anexo:anexo, case:1, path:'asterisk/ajax/'}
     var procesar = capsula(datos)
     var data = JSON.parse(procesar.fuente)

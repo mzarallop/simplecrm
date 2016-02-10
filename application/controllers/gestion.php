@@ -14,7 +14,7 @@ class Gestion extends CI_Controller {
 			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js",
 							"gestion/gestion.js", "moneda.min.js", "gestion/llamadas.js", "highcharts.js", "exporting.js", "funnel.js");
 			$datos['title'] = 'Gestión';
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('fijos/menu', $datos);
@@ -29,8 +29,8 @@ class Gestion extends CI_Controller {
 		$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js",
 						"gestion/gestion.js", "moneda.min.js", "highcharts.js", "exporting.js", "funnel.js");
 		$datos['title'] = 'Reporte Gestión';
-		$datos['menu'] = $this->lib_menu->menu_usuarios();
-		$datos['reporte'] = $this->mod_gestion->reporte_gestiones(2);
+		$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
+		$datos['reporte'] = $this->mod_gestion->reporte_gestiones(2,0);
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
 		$this->load->view('gestion/reporte_gestion', $datos);
@@ -45,7 +45,7 @@ class Gestion extends CI_Controller {
 			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js",
 							"gestion/gestion.js", "moneda.min.js", "gestion/llamadas.js", "highcharts.js", "exporting.js", "funnel.js");
 			$datos['title'] = 'Carteras Ventas';
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 			$this->load->database();
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('fijos/menu', $datos);
@@ -60,7 +60,7 @@ class Gestion extends CI_Controller {
 			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js",
 							"gestion/gestion.js", "moneda.min.js", "gestion/llamadas.js");
 			$datos['title'] = 'Gestión';
-			$datos['menu'] = $this->lib_menu->menu_usuarios();
+			$datos['menu'] = $this->lib_menu->menu_usuarios($datos['title']);
 			$datos['usuarios'] = $this->mod_gestion->traer_usuarios(array("id"=>0));
 			$this->load->database();
 			$this->load->view('fijos/head', $datos);
@@ -76,7 +76,6 @@ class Gestion extends CI_Controller {
 				if(@$_FILES['archivo']['size']>0){
 					$nombre = time().'.csv';
 					$estado = copy($_FILES['archivo']['tmp_name'], './asignaciones/'.$nombre);
-
 					if($estado){
 						@$this->mod_gestion->cargar_asignacion(array("archivo"=>$nombre));
 						$file = './asignaciones/'.$nombre;
@@ -89,7 +88,6 @@ class Gestion extends CI_Controller {
 					           array_push($vector, array("rbd"=>$data[0], "usuario"=>$data[1]));
 					        }
 					    } while ($data = fgetcsv($handle,1000,",","'"));
-
 
 						$r = $this->mod_gestion->crear_asignacion($vector, $_POST['forma_carga']);
 						echo $r;
@@ -109,6 +107,23 @@ class Gestion extends CI_Controller {
 			}
 	}
 
+	function lista_sostenedores(){
+
+		$s = $this->mod_gestion->sostenedores();
+		echo '<pre>';print_r($s);echo '</pre>';
+	}
+
+	function lista_colegios(){
+
+		$s = $this->mod_gestion->colegios();
+		echo '<pre>';print_r($s);echo '</pre>';
+	}
+
+	function lista_sep(){
+
+		$s = $this->mod_gestion->sep();
+		echo '<pre>';print_r($s);echo '</pre>';
+	}
 	function reporte(){
 
 		$this->load->library('pdf');
@@ -176,7 +191,7 @@ class Gestion extends CI_Controller {
             $pdf->AddPage('L');
             $pdf->WriteHTML($html_final, true, 0, true, 0);
             $pdf->lastPage();
-            $vendedores = @$this->mod_gestion->reporte_gestiones(2);
+            $vendedores = @$this->mod_gestion->reporte_gestiones(2, 0);
             //echo '<pre>';print_r($vendedores);echo '</pre>';
             foreach($vendedores as $vend){
             	//$pdf->setPageOrientation('P');
@@ -229,6 +244,10 @@ class Gestion extends CI_Controller {
 			break;
 			case 8:
 				$r = @$this->mod_gestion->reporte_gestionesb();
+				echo json_encode($r);
+			break;
+			case 9:
+				$r = $this->mod_gestion->reporte_gestiones(2,0);
 				echo json_encode($r);
 			break;
 		}

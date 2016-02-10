@@ -1,36 +1,119 @@
-<table class="table table-condensed" style="font-size:11px;">
-	<tr>
-		<td>Rut:<br> <input type="text" id="rut"> </td>
-		<td>Razon Social:<br> <input type="text" id="razon_social"></td>
-		<td>Código Factura<br> <input type="text" id="codigo_factura"></td>
-		<td>Fechade facturación: <br> <input type="date" id="fecha"></td>
-	</tr>
-	<tr>
-		<td>Emitida por:<br> <input type="text" id="rut_empresa"> </td>
-		<td>Afecta o Exenta:<br> <input type="text" id="afecta"></td>
-		<td>Cuenta Contable<br> <input type="text" id="codigo_factura"></td>
-		<td>Monto Total: <br> <input type="text" id="monto_total"></td>
-	</tr>
-	<tr>
-		<td>RBD:<br> <input type="text" id="rbd"> </td>
-		<td>Colegio:<br> <input type="text" id="colegio"></td>
-		<td>Vendedor:<br> <select name="vendedor" id="vendedor"></select></td>
-		<td>Coordinador: <br> <select name="coordinador" id="coordinador"></select></td>
-	</tr>
-	<tr>
-		<td>Rut Representante:<br> <input type="text" id="rut_representante"> </td>
-		<td>Nombre:<br> <input type="text" id="nombre_representante"></td>
-		<td>Teléfono:<br> <input type="text" id="telefono_representante"></td>
-		<td>Email: <br> <input type="text" id="email_reporesentante"></td>
-	</tr>
-	<tr>
-		<td>Forma de pago:<br> <select name="" id="forma_pago"></select> </td>
-		<td>Cuotas:<br> <select name="cuotas" id="cuotas"></select></td>
-		<td>Fecha inicio de pagos:<br> <input type="date" id="fecha_inicio"></td>
-		<td>Valor Cuota: <br> <input type="text" id="valor_cuota"></td>
-	</tr>
-</table>
-<button>Validar Venta</button>
-<button>Generar Factura</button>
-<button>Limpiar Formulario</button>
+<div class="row-fluid">
+
+	<div class="span12">
+		<div class="documento_factura">
+				<div class="row-fluid">
+					<div class="span8">
+					<h1>Three software</h1>
+						<table class="table table-condensed">
+							<tr>
+								<td>Emisor:</td>
+								<td>
+									<select name="emisor" id="emisor" class="span12">
+										<option value="76567317-K">Three Software SPA</option>
+									</select>
+								</td>
+								<td>Fecha:</td>
+								<td><input type="date" id="fecha_factura" value="<?= date("Y-m-d")  ?>" class="span12"></td>
+							</tr>
+							<tr>
+								<td>RUT:</td>
+								<td><input type="text" id="rut_rbd" placeholder="Rut o RBD Receptor" class="span12" onblur="buscar_datos(this.value)"></td>
+									<td>Razon Social:</td>
+								<td><input type="text" id="razon_social" class="span12"></td>
+							</tr>
+							<tr>
+								<td>Dirección:</td>
+								<td><input type="text" id="direccion" class="span12"></td>
+								<td>Comuna:</td>
+								<td><input type="text" id="comuna" class="span12"></td>
+							</tr>
+							<tr>
+								<td>Coordinador:</td>
+								<td>
+									<select name="coordinador" id="coordinador" placeholder="coordinador" class="span12">
+										<option value="0">--</option>
+										<?php foreach($coordinador as $co): ?>
+											<option value="<?= $co['ID'] ?>"><?=$co['NOM_EJECUTIVO'] ?></option>
+										<?php endforeach; ?>
+									</select>
+								</td>
+								<td>Vendedor:</td>
+								<td>
+									<select name="vendedor" id="vendedor" placeholder="vendedor" class="span12">
+										<option value="0">--</option>
+										<?php foreach($vendedor as $co): ?>
+											<option value="<?= $co['ID'] ?>"><?=$co['NOM_EJECUTIVO'] ?></option>
+										<?php endforeach; ?>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="span4">
+						<div class="numero_factura">
+							<div class="rut">RUT: 76.788.459-0</div>
+							<div class="tipo_doc">FACTURA</div>
+							<div class="numero_doc">N°: <input class="correlativo_factura" type="text" value="" placeholder="000000234"></div>
+						</div>
+						<ul class="tipo_factura">
+						<li><label><input type="radio" value="1" group="tipo_factura"> Afecta</label></li>
+						<li><label><input type="radio" value="0" group="tipo_factura"> Excenta</label></li>
+						</ul>
+					</div>
+				</div>
+				<!--DETALLE DE LA COMPRA-->
+				<div class="row-fluid">
+					<table class="table table-codensed" id="detalle_factura">
+						<thead><tr>
+							<th width="10%">Unidad</th>
+							<th width="55%">Descripción</th>
+							<th width="10%">Neto Unidad</th>
+							<th width="10%">Total Neto</th>
+							<th width="10%">Total</th>
+							<th width="5%"></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr style="background-color: rgba(128, 128, 128, 0.25);">
+							<td><input type="text" id="unidad" class="span12" value="1" style="text-align:center"></td>
+							<td colspan="5" >
+							<select name="" id="descripcion" class="span12" onchange="cargar_precio(this.value);">
+								<option value="0">--</option>
+								<?php  foreach($productos as $p): ?>
+									<optgroup label="<?= $p['categoria']['nombre'] ?>">
+										<?php foreach($p['submenu'] as $sm): ?>
+											<option value="<?= $sm['id']; ?>|<?= $sm['nombre']; ?>|<?= $sm['precio']; ?>"><?= $sm['nombre'] ?> Neto ($ <?= number_format($sm['precio'],0) ?>)</option>
+										<?php endforeach; ?>
+									</optgroup>
+								<?php endforeach; ?>
+							</select>
+							<input type="hidden" id="neto" class="span12">
+							<input type="hidden" id="total_neto" class="span12" disabled="true">
+							<input type="hidden" id="total" class="span12" disabled="true">
+							</td>
+
+						</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="4" width="75%" style="text-align:right;font-weight:bold">Neto</td>
+								<td colspan="2" align="right"><input type="hidden" id="neto_final"><span class="neto_final"></span></td>
+							</tr>
+							<tr>
+								<td colspan="4" width="75%" style="text-align:right;font-weight:bold">I.V.A 19%</td>
+								<td colspan="2" align="right"><input type="hidden" id="iva_final"><span class="iva_final"></span></td>
+							</tr>
+							<tr>
+								<td colspan="4" width="75%" style="text-align:right;font-weight:bold">Total</td>
+								<td colspan="2" align="right"><input type="hidden" id="total_final"><span class="total_final"></span></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			<button class="btn btn-success" style="float:right">Guardar Factura</button>
+		</div>
+
+	</div>
+</div>
 
