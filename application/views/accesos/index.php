@@ -1,19 +1,14 @@
-<div id="login" style="margin: 10% 40%; padding:30px; background-color:white; border-radius:1em; shadow:1px 1px;">
-	
+<div id="login">
+	<img src="<?= base_url() ?>img/logos/<?= $empresa['logo'] ?>" alt="<?= $empresa['razon_social'] ?>">
 	<table align="center">
 		<tr>
-			<td align="center">
-				<p><img src=" <?php echo base_url(); ?>img/logo_kdoce.png"></p>
-			</td>
+			<td><input type="text" id="user" placeholder="Usuario" required/>	</td>
 		</tr>
 		<tr>
-			<td><input type="text" id="user" placeholder="Usuario"/>	</td>
+			<td><input type="password" id="pass" placeholder="Contraseña" required/></td>
 		</tr>
 		<tr>
-			<td><input type="password" id="pass" placeholder="Contraseña"/></td>
-		</tr>
-		<tr>
-			<td><button class="btn btn-success" onclick="login()">Entrar</button></td>
+			<td><button class="btn btn-large btn-primary" onclick="login()">Iniciar sesion</button></td>
 		</tr>
 	</table>
 </div>

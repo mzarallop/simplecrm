@@ -76,7 +76,6 @@ class Gestion extends CI_Controller {
 				if(@$_FILES['archivo']['size']>0){
 					$nombre = time().'.csv';
 					$estado = copy($_FILES['archivo']['tmp_name'], './asignaciones/'.$nombre);
-
 					if($estado){
 						@$this->mod_gestion->cargar_asignacion(array("archivo"=>$nombre));
 						$file = './asignaciones/'.$nombre;
@@ -89,7 +88,6 @@ class Gestion extends CI_Controller {
 					           array_push($vector, array("rbd"=>$data[0], "usuario"=>$data[1]));
 					        }
 					    } while ($data = fgetcsv($handle,1000,",","'"));
-
 
 						$r = $this->mod_gestion->crear_asignacion($vector, $_POST['forma_carga']);
 						echo $r;
@@ -109,6 +107,23 @@ class Gestion extends CI_Controller {
 			}
 	}
 
+	function lista_sostenedores(){
+
+		$s = $this->mod_gestion->sostenedores();
+		echo '<pre>';print_r($s);echo '</pre>';
+	}
+
+	function lista_colegios(){
+
+		$s = $this->mod_gestion->colegios();
+		echo '<pre>';print_r($s);echo '</pre>';
+	}
+
+	function lista_sep(){
+
+		$s = $this->mod_gestion->sep();
+		echo '<pre>';print_r($s);echo '</pre>';
+	}
 	function reporte(){
 
 		$this->load->library('pdf');

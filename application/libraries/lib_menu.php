@@ -126,7 +126,7 @@ class lib_menu{
 						</li>
   					</ul>
 					</li>';
-				$div.='<li id="Salir"><a href="http://localhost/crmkdoce/accesos/logout/#salir">Salir del sistema</a></li>';
+				$div.='<li id="Salir"><a href="'.base_url().'accesos/logout/#salir">Salir del sistema</a></li>';
 				$div.='</ul>';
 
 				$div.='<div class="navbar-form pull-right">

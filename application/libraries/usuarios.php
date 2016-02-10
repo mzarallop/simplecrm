@@ -1,6 +1,13 @@
 <?php
 	class Usuarios {
 
+		function __construct(){
+			//parent::__construct();
+
+			$ci = get_instance();
+			$this->empresa = $ci->load->database('empresas', TRUE);
+		}
+
 		function login($param)
 		{
 			$ci = get_instance();
@@ -30,7 +37,7 @@
 		{
 			$ci = get_instance();
 
-			$sql = "select ID, IDEMPRESA, IDPERFIL from core_usuarios where LOGIN = '".$param['user']."' 
+			$sql = "select ID, IDEMPRESA, IDPERFIL from core_usuarios where LOGIN = '".$param['user']."'
 					and PASSWORD = '".$param['pass']."'";
 
 				$query = $ci->db->query($sql);
@@ -45,7 +52,7 @@
 			session_start();
 			$ci = get_instance();
 			$usuario = $ci->session->userdata('acceso');
-			
+
 			//$this->firmar($usuario['ID'], 'salir', date("d/m/Y"), time());
 
 			$ci->session->unset_userdata('acceso');
@@ -91,7 +98,7 @@
 			$ci = get_instance();
 			$datos = array(
 				"usuario"=>$usuario,
-				"accion"=>$accion, 
+				"accion"=>$accion,
 				"fecha"=>$fecha,
 				"unix"=>$unix
 				);
@@ -116,6 +123,13 @@
 				case 4:	$color='#FF0000'; break;
 			}
 			return $color;
+		}
+
+		function empresa(){
+			$this->empresa->where('url',$_SERVER['HTTP_HOST']);
+			$query = $this->empresa->get('lista_empresas');
+			$row = $query->result_array();
+			return $row[0];
 		}
 	}
  ?>

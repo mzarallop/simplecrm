@@ -58,8 +58,7 @@ bottom:0;
 text-align:center;
 margin:0 auto;
 text-align:middle;
-color:rgb(0, 20, 245);
-border-top: 2px solid darkorange;
+
 }
 .footer>.notificacion
 {
@@ -144,4 +143,19 @@ input.correlativo_factura{
     color: red;
     text-align: right;
     font-size: 25px;
+}
+#login{
+    display: inline-block;
+    text-align: center;
+    margin-top: 5%;
+    padding: 4%;
+    background-color: rgba(105, 105, 105, 0.05);
+    margin-left: 40%;
+    max-width: 20%;
+    min-width: 250px;
+    border: 1px solid rgba(105, 105, 105, 0.38);
+}
+
+#login img{
+    margin:10%;
 }
