@@ -36,7 +36,7 @@ $db['asterisk']['autoinit'] = TRUE;
 $db['asterisk']['stricton'] = FALSE;
 
 $db['empresas']['hostname'] = 'localhost';
-$db['empresas']['username'] = 'root';
+$db['empresas']['username'] = 'colegios';
 $db['empresas']['password'] = '1dm3n3str1d4r';
 $db['empresas']['database'] = 'core_empresas';
 $db['empresas']['dbdriver'] = 'mysqli';
