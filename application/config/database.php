@@ -6,8 +6,8 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '2015';
+$db['default']['username'] = 'colegios';
+$db['default']['password'] = '1dm3n3str1d4r';
 $db['default']['database'] = 'colegios';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
@@ -22,8 +22,8 @@ $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
 $db['asterisk']['hostname'] = 'localhost';
-$db['asterisk']['username'] = 'root';
-$db['asterisk']['password'] = '2015';
+$db['asterisk']['username'] = 'colegios';
+$db['asterisk']['password'] = '1dm3n3str1d4r';
 $db['asterisk']['database'] = 'asteriskcdrdb';
 $db['asterisk']['dbdriver'] = 'mysqli';
 $db['asterisk']['dbprefix'] = '';
