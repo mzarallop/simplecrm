@@ -8,7 +8,7 @@ $active_record = TRUE;
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = '2015';
-$db['default']['database'] = 'kdoceduc_crm';
+$db['default']['database'] = 'colegios';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
@@ -37,21 +37,6 @@ $db['asterisk']['swap_pre'] = '';
 $db['asterisk']['autoinit'] = TRUE;
 $db['asterisk']['stricton'] = FALSE;
 
-$db['empresas']['hostname'] = 'localhost';
-$db['empresas']['username'] = 'root';
-$db['empresas']['password'] = '2015';
-$db['empresas']['database'] = 'core_empresas';
-$db['empresas']['dbdriver'] = 'mysqli';
-$db['empresas']['dbprefix'] = '';
-$db['empresas']['pconnect'] = TRUE;
-$db['empresas']['db_debug'] = TRUE;
-$db['empresas']['cache_on'] = FALSE;
-$db['empresas']['cachedir'] = '';
-$db['empresas']['char_set'] = 'utf8';
-$db['empresas']['dbcollat'] = 'utf8_general_ci';
-$db['empresas']['swap_pre'] = '';
-$db['empresas']['autoinit'] = TRUE;
-$db['empresas']['stricton'] = FALSE;
 
 
 
