@@ -1,4 +1,4 @@
-var server = 'http://' + window.location.host + '/crmkdoce/'
+var server = 'http://' + window.location.host + '/'
 var central = 'http://192.168.60.100'
 var cargador = '<center><img src="'+server+'img/loading.gif"></center>'
 
