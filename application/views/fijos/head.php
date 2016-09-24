@@ -16,15 +16,16 @@
 <?php endforeach; ?>
 <!-- JAVASCRIPT -->
 
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.8&sensor=true&language=ja&region=CLP&language=es"></script>
+
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/bootbox.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>js/notify.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/usabilidad.js"></script>
 <?php foreach($js as $java):?>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/<?php echo $java; ?>"></script>
 <?php endforeach; ?>
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrO_ASb-jGw0wrubNplRUQ-_IUpUZ7reU&signed_in=true&callback=initMap"></script>
 </head>
 <body>

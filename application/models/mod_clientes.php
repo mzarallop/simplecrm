@@ -372,5 +372,31 @@
 			return array("idcolegio"=>$idcolegio, "rbd"=>$obj['rbd'], "estado"=>$colegio);
 		}
 
+			function render_mapas($obj){
+				$us = $this->usuarios->usuario_completo();
+				if(isset($obj['region']) && $obj['region']>0){
+					$this->db->where_in('ccs.ID_REGION', $obj['region']);
+					$this->db->where_in('ccs.ID_DEPENDENCIA', $obj['dependencia']);
+				}else{
+					$this->db->where('ccs.ID_REGION', 13);
+					$this->db->where('ccs.ID_DEPENDENCIA', 2);
+				}
+				//$this->db->where('ccs.ALUMNOS_SEP >', 150);
+
+			$this->db->select('ccs.NOMBRE, ccs.LATITUD, ccs.LONGITUD, ccs.RBD, ccs.SEGMENTO, cca.idusuario VENDEDOR, ccs.ALUMNOS_SEP, ccs.TELEFONO');
+			$this->db->from('core_clientes_sep ccs');
+			$this->db->join('core_clientes_asignaciones cca', 'ccs.RBD = cca.idrbd AND cca.idusuario = '.$us['ID'], 'left');
+			//$this->db->where('ID_DEPENDENCIA', '3');
+			$query = $this->db->get();
+			$row = $query->result_array();
+			# ['Bondi Beach', -33.890542, 151.274856, 4],
+			return $row;
+		}
+
+		function usuario_conectado(){
+
+			$us = $this->usuarios->usuario_completo();
+			return $us;
+		}
 	}
 ?>

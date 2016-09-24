@@ -42,7 +42,7 @@ function reporte_llamadas(){
             var resultado  = new Array
 
             $.each(usuarios, function(){
-                var buscar_llamadas = {path:'http://186.67.137.90/api/', inicio:inicio, termino:termino, anexo:this.ANEXO}
+                var buscar_llamadas = {path:central+'/api/', inicio:inicio, termino:termino, anexo:this.ANEXO}
                 var procesar = capsula_llamada(buscar_llamadas)
                 var data = JSON.parse(procesar.fuente)
 
@@ -190,7 +190,7 @@ function tmp_plantilla_segmento(obj, title){
             html+='<td>'+this.tiempo+'</td>'
             html+='<td style="text-align:right">'
                 html+='<audio controls="play-pause">'
-                html+='<source src="http://186.67.137.90:8080/audio/'+this.carpeta+'/'+this.recordingfile+'" type="audio/wav">'
+                html+='<source src="'+central+'/audio/'+this.carpeta+'/'+this.recordingfile+'" type="audio/wav">'
                 html+='</audio>'
             html+='</td>'
             html+='</tr>'

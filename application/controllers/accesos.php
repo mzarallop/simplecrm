@@ -7,10 +7,10 @@ class Accesos extends CI_Controller {
 	 *
 	 * Maps to the following URL
 	 * 		http://example.com/index.php/welcome
-	 *	- or -  
+	 *	- or -
 	 * 		http://example.com/index.php/welcome/index
 	 *	- or -
-	 * Since this controller is set as the default controller in 
+	 * Since this controller is set as the default controller in
 	 * config/routes.php, it's displayed at http://example.com/
 	 *
 	 * So any other public methods not prefixed with an underscore will
@@ -20,35 +20,15 @@ class Accesos extends CI_Controller {
 	public function index()
 	{
 			$datos['usuario'] = $this->usuarios->datos_usuarios();
+			$datos['empresa'] = $this->usuarios->empresa();
 			$datos['css'] = array("bootstrap.css", "bootstrap.min.css","general.css");
 			$datos['js'] = array("jquery.js","bootstrap.js", "bootstrap.min.js", "bootstrap-tab.js", "usabilidad.js", "accesos/login.js");
-			$datos['title'] = 'CRM Gestión de Ventas y Cotizaciones!';
+			$datos['title'] = 'CRM | '.$datos['empresa']['razon_social'];
 
 			$this->load->database();
 			$this->load->view('fijos/head', $datos);
 			$this->load->view('accesos/index', $datos);
 			$this->load->view('fijos/footer_loggin',$datos);
-	}
-	
-	public function mensaje()
-	{
-		$this->usuarios->verificar_login();
-		$this->load->view('mensaje');	
-	}
-
-	public function tareas()
-	{
-		$this->usuarios->verificar_login();
-	}
-
-	public function asignaciones()
-	{
-		$this->usuarios->verificar_login();
-	}
-
-	public function reportes()
-	{
-		$this->usuarios->verificar_login();
 	}
 
 	public function login()
@@ -77,7 +57,7 @@ class Accesos extends CI_Controller {
 
 	public function logout()
 	{
-		
+
 		$this->usuarios->cerrar_session();
 		redirect(base_url());
 	}
@@ -92,7 +72,7 @@ class Accesos extends CI_Controller {
 		}
 	}
 
-	
+
 }
 
 /* End of file welcome.php */

@@ -1,4 +1,6 @@
-var server = 'http://' + window.location.host + '/crmkdoce/'
+var server = 'http://' + window.location.host + '/'
+var central = 'http://192.168.60.100'
+var cargador = '<center><img src="'+server+'img/loading.gif"></center>'
 
 $(function() {
     if (window.location.hash != "") {
@@ -9,8 +11,9 @@ $(function() {
 
 function capsula(obj) {
 
-    var procesar = 
+    var procesar =
     $.ajax({
+
         url: server + obj.path,
         type: 'post',
         dataType: 'json',
@@ -25,8 +28,35 @@ function capsula(obj) {
 
     return resultado
 
-} 
+}
 
+function capsula_asincrona(obj, onSuccess, load, id){
+    if(load){
+        $.ajax({
+           beforeSend:function(){$(id).html(cargador)},
+            url: server + obj.path,
+            type: 'post',
+            dataType: 'json',
+            async: true,
+            data: obj,
+            success: function(result,status,xhr){
+                $(id).html("")
+                onSuccess(result);
+            }
+        });
+    }else{
+        $.ajax({
+            url: server + obj.path,
+            type: 'post',
+            dataType: 'json',
+            async: true,
+            data: obj,
+            success: function(result,status,xhr){
+                onSuccess(result);
+            }
+        });
+    }
+}
 
 function moneda(cash){
     var clp = parseFloat(cash).toFixed(0).replace(/./g, function(c, i, a) {return i && c !== "." && !((a.length - i) % 3) ? ',' + c : c;})
@@ -46,3 +76,16 @@ return minutos+ ':'+ segundos+ ' Mín.';
 }
 }
 
+
+Array.prototype.sum = function(selector) {
+    if (typeof selector !== 'function') {
+        selector = function(item) {
+            return item;
+        }
+    }
+    var sum = 0;
+    for (var i = 0; i < this.length; i++) {
+        sum += parseFloat(selector(this[i]));
+    }
+    return sum;
+};
