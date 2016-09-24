@@ -532,6 +532,7 @@ class mod_crm extends CI_Model{
 		}
 		return $gestiones_vendedores;
 	}
+	
 
 	function buscar_colegio_old($obj){
 
@@ -550,27 +551,6 @@ class mod_crm extends CI_Model{
 			return $query->result_array();
 	}
 
-	/*function ordenar_fechas(){
-		$query = $this->db->get('gestiones_antiguas_master');
-		$row = $query->result_array();
-		$contador = 1;
-		foreach($row as $r){
-			#alterar fechas
-			$fecha = $r['FECHA_GESTION'];
-			$fecha = explode(' ', $fecha);
-			$hora = $fecha[1];
-			$fecha = explode('-',$fecha[0]);
-			$fecha = $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
-			$fecha = $fecha.' '.$hora;
-			$contador++;
-			$datos = array("FECHA_GESTION"=>$fecha);
-			$this->db->where('ID_GESTION',$r['ID_GESTION']);
-			$this->db->update('gestiones_antiguas_master', $datos);
-		}
-
-		return $contador;
-
-	}*/
 }
 
  ?>
