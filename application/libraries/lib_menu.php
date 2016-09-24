@@ -82,7 +82,7 @@ class lib_menu{
 						</li>
   					</ul>
 					</li>';
-				$div.='<li id="reportes" class="dropdown">
+			/*	$div.='<li id="reportes" class="dropdown">
 				<a href="" class="dropdown-toggle" data-toggle="dropdown">Facturas <b class="caret"></b></a>
 					 <ul class="dropdown-menu">
 						<li>
@@ -125,7 +125,7 @@ class lib_menu{
 							<a href="'.base_url().'cobranza/flujo">Flujo de caja ingresos</a>
 						</li>
   					</ul>
-					</li>';
+					</li>';*/
 				$div.='<li id="Salir"><a href="'.base_url().'accesos/logout/#salir">Salir del sistema</a></li>';
 				$div.='</ul>';
 
