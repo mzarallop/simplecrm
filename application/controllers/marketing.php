@@ -18,7 +18,7 @@ class marketing extends CI_controller{
 
 		$this->load->view('fijos/head', $datos);
 		$this->load->view('fijos/menu', $datos);
-		$this->load->view('clientes/crm', $datos);
+		$this->load->view('marketing/index', $datos);
 		$this->load->view('fijos/footer');
 
 	}
