@@ -3,7 +3,7 @@
 		<label>Segmentos:<br>
 		<select name="segmento" id="segmento">
 			<?php foreach($segmento as $seg): ?>
-				<option value="<?= $seg['SEGMENTO'] ?>"><?= $seg['SEGMENTO'] ?> (<?= $seg['total_colegios'] ?>)</option>
+				<option value="<?= $seg['SEGMENTO'] ?>"><?= $seg['SEGMENTO'] ?> (<?= FORMAT_NUMBER($seg['total_colegios'] ?>,0,',','.');)</option>
 			<?php endforeach; ?>
 		</select>
 		</label>
