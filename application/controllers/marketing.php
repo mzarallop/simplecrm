@@ -8,6 +8,18 @@ class marketing extends CI_controller{
 	}
 
 	function index(){
+		$this->usuarios->verificar_login();
+		$datos['usuario'] = $this->usuarios->datos_usuarios();
+		$datos['css'] = array("crm/crm.css");
+		$datos['js'] = array("crm/crm.js", "moneda.min.js");
+		$datos['title'] = 'Marketing';
+		//@$datos['mi_cartera'] = $this->mod_crm->mi_cartera();
+		$datos['menu'] = $this->lib_menu->menu_usuarios();
+
+		$this->load->view('fijos/head', $datos);
+		$this->load->view('fijos/menu', $datos);
+		$this->load->view('clientes/crm', $datos);
+		$this->load->view('fijos/footer');
 
 	}
 
