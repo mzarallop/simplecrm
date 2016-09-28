@@ -22,6 +22,9 @@ class crm extends CI_Controller {
 		$this->load->view('fijos/footer');
 	}
 
+	
+
+
 
 	function ajax(){
 		switch(@$_POST['case']){
