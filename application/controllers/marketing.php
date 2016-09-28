@@ -13,7 +13,7 @@ class marketing extends CI_controller{
 		$datos['css'] = array("crm/crm.css");
 		$datos['js'] = array("crm/crm.js", "moneda.min.js");
 		$datos['title'] = 'Marketing';
-		$datos['segmentos'] = $this->mod_marketing->lista_segmentos();
+		$datos['segmento'] = $this->mod_marketing->lista_segmentos();
 		$datos['menu'] = $this->lib_menu->menu_usuarios();
 
 		$this->load->view('fijos/head', $datos);
