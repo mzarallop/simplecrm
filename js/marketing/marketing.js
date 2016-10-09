@@ -56,11 +56,26 @@ function filtrarColegios(){
 	var procesar = capsula({path:'marketing/ajax', case:3, data:data})
 	var data  = JSON.parse(procesar.fuente)
 	$(".tabla_colegios").html(pintarColegios(data))
+	 $('#tabla_colegios').DataTable({
+	     buttons: [
+        'copy', 'excel', 'pdf'
+    ]
+	 });
 }
 
 function pintarColegios(data){
 
-	var tabla = '<table class="table table-condensed table-striped">'
+	var tabla = '<table  id="tabla_colegios" class="table table-condensed table-striped">'
+	tabla+='<thead>'
+	tabla+='<tr>'
+	tabla+='<th></th>'
+	tabla+='<th>RBD</th>'
+	tabla+='<th>COLEGIO</th>'
+	tabla+='<th>DEPENDENCIA</th>'
+	tabla+='<th>PRIORITARIOS</th>'
+	tabla+='<th>BEN</th>'
+	tabla+='</tr>'
+	tabla+='</thead><tbody>'
 	$.each(data, function(){
 		tabla+='<tr>'
 		tabla+='<td><input type="checkbox" value="'+this.RBD+'" checked="true"/></td>'
@@ -71,7 +86,7 @@ function pintarColegios(data){
 		tabla+='<td>'+this.N_BEN+'</td>'
 		tabla+='</tr>'
 	})
-	tabla+='</table>'
+	tabla+='</tbody></table>'
 	return tabla
 }
 

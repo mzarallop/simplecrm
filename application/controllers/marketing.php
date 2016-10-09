@@ -10,8 +10,8 @@ class marketing extends CI_controller{
 	function index(){
 		$this->usuarios->verificar_login();
 		$datos['usuario'] = $this->usuarios->datos_usuarios();
-		$datos['css'] = array("crm/crm.css");
-		$datos['js'] = array("marketing/marketing.js", "moneda.min.js");
+		$datos['css'] = array("crm/crm.css",  "jquery.dataTables.css");
+		$datos['js'] = array("marketing/marketing.js", "moneda.min.js", "jquery.dataTables.js");
 		$datos['title'] = 'Marketing';
 		$datos['segmento'] = $this->mod_marketing->lista_segmentos();
 		$datos['menu'] = $this->lib_menu->menu_usuarios();
