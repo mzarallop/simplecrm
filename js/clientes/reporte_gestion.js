@@ -1,3 +1,0 @@
-$(function(){
-	reporte_llamadas()
-})
